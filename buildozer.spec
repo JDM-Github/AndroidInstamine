@@ -1,5 +1,4 @@
 [app]
-leg_level = 2
 # Build by JDM-Buildozer
 
 # (str) Title of your application
@@ -15,7 +14,7 @@ package.domain = org.jdm.template
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas,ttf,mp3,json
+source.include_exts = py,png,jpg,kv,atlas,ttf,mp3,json,wav,ico
 
 # (list) List of inclusions using pattern matching
 # source.include_patterns = assets/*,images/*.png
@@ -31,7 +30,7 @@ source.include_exts = py,png,jpg,kv,atlas,ttf,mp3,json
 # source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
-version = 0.0.1
+version = 0.1.0
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -46,10 +45,10 @@ requirements = python3,kivy,plyer
 # requirements.source.kivy = ../../kivy
 
 # (str) Presplash of the application
-# presplash.filename = %(source.dir)s/asset/presplash.png
+presplash.filename = %(source.dir)s/rassets/icon/presplash.png
 
 # (str) Icon of the application
-# icon.filename = %(source.dir)s/asset/icon.png
+icon.filename = %(source.dir)s/rassets/icon/main.ico
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = portrait
@@ -62,7 +61,7 @@ orientation = portrait
 #
 
 #
-# author = © Copyright Info
+# author = � Copyright Info
 
 # change the major version of python used by the app
 osx.python_version = 3
@@ -130,13 +129,13 @@ android.permissions = READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, MANAGE_EXTE
 # (bool) If True, then skip trying to update the Android sdk
 # This can be useful to avoid excess Internet downloads or save time
 # when an update is due and you just want to test/build your package
-android.skip_update = False
+# android.skip_update = False
 
 # (bool) If True, then automatically accept SDK license
 # agreements. This is intended for automation only. If set to False,
 # the default, you will be shown the license when first running
 # buildozer.
-android.accept_sdk_license = True
+# android.accept_sdk_license = False
 
 # (str) Android entry point, default is ok for Kivy-based app
 # android.entrypoint = org.kivy.android.PythonActivity
@@ -395,11 +394,11 @@ warn_on_root = 1
 # bin_dir = ./bin
 
 
-#    ---------------------------------------------------------------------------
+#    -----------------------------------------------------------------------------
 #    List as sections
 #
 #    You can define all the "list" as [section:key].
-#    Each line will be considered as an option to the list.
+#    Each line will be considered as a option to the list.
 #    Let's take [app] / source.exclude_patterns.
 #    Instead of doing:
 #
@@ -413,11 +412,11 @@ warn_on_root = 1
 # data/audio/*.wav
 # data/images/original/*
 #
-#
-#    ---------------------------------------------------------------------------
+
+#    -----------------------------------------------------------------------------
 #    Profiles
 #
-#    You can extend section/key with a profile
+#    You can extend section / key with a profile
 #    For example, you want to deploy a demo version of your application without
 #    HD content. You could first change the title to add "(demo)" in the name
 #    and extend the excluded directories to remove the HD content.
