@@ -14,7 +14,7 @@ package.domain = org.jdm.template
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas,ttf,mp3,json,wav,ico
+source.include_exts = py,png,jpg,kv,atlas,ttf,mp3,json
 
 # (list) List of inclusions using pattern matching
 # source.include_patterns = assets/*,images/*.png
@@ -30,7 +30,7 @@ source.include_exts = py,png,jpg,kv,atlas,ttf,mp3,json,wav,ico
 # source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
-version = 0.1.0
+version = 0.0.1
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -45,10 +45,10 @@ requirements = python3,kivy,plyer
 # requirements.source.kivy = ../../kivy
 
 # (str) Presplash of the application
-presplash.filename = %(source.dir)s/rassets/icon/presplash.png
+# presplash.filename = %(source.dir)s/asset/presplash.png
 
 # (str) Icon of the application
-icon.filename = %(source.dir)s/rassets/icon/main.ico
+# icon.filename = %(source.dir)s/asset/icon.png
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = portrait
@@ -61,7 +61,7 @@ orientation = portrait
 #
 
 #
-# author = � Copyright Info
+# author = © Copyright Info
 
 # change the major version of python used by the app
 osx.python_version = 3
@@ -109,7 +109,7 @@ android.permissions = READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, MANAGE_EXTE
 # android.sdk = 20
 
 # (str) Android NDK version to use
-# android.ndk = 25b
+# android.ndk = 23b
 
 # (int) Android NDK API to use. This is the minimum API your app will support, it should usually match android.minapi.
 # android.ndk_api = 21
@@ -129,7 +129,7 @@ android.permissions = READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, MANAGE_EXTE
 # (bool) If True, then skip trying to update the Android sdk
 # This can be useful to avoid excess Internet downloads or save time
 # when an update is due and you just want to test/build your package
-android.skip_update = False
+android.skip_update = True
 
 # (bool) If True, then automatically accept SDK license
 # agreements. This is intended for automation only. If set to False,
@@ -263,7 +263,7 @@ android.accept_sdk_license = True
 
 # (list) The Android archs to build for, choices: armeabi-v7a, arm64-v8a, x86, x86_64
 # In past, was `android.arch` as we weren't supporting builds for multiple archs at the same time.
-android.archs = armeabi-v7a
+android.archs = arm64-v8a, armeabi-v7a
 
 # (int) overrides automatic versionCode computation (used in build.gradle)
 # this is not the same as app version and should only be edited if you know what you're doing
@@ -301,7 +301,7 @@ android.allow_backup = True
 # p4a.fork = kivy
 
 # (str) python-for-android branch to use, defaults to master
-p4a.branch = develop
+# p4a.branch = master
 
 # (str) python-for-android specific commit to use, defaults to HEAD, must be within p4a.branch
 # p4a.commit = HEAD
@@ -394,11 +394,11 @@ warn_on_root = 1
 # bin_dir = ./bin
 
 
-#    -----------------------------------------------------------------------------
+#    ---------------------------------------------------------------------------
 #    List as sections
 #
 #    You can define all the "list" as [section:key].
-#    Each line will be considered as a option to the list.
+#    Each line will be considered as an option to the list.
 #    Let's take [app] / source.exclude_patterns.
 #    Instead of doing:
 #
@@ -412,11 +412,11 @@ warn_on_root = 1
 # data/audio/*.wav
 # data/images/original/*
 #
-
-#    -----------------------------------------------------------------------------
+#
+#    ---------------------------------------------------------------------------
 #    Profiles
 #
-#    You can extend section / key with a profile
+#    You can extend section/key with a profile
 #    For example, you want to deploy a demo version of your application without
 #    HD content. You could first change the title to add "(demo)" in the name
 #    and extend the excluded directories to remove the HD content.

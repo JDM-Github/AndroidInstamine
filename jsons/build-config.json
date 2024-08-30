@@ -144,8 +144,8 @@
         "Activate": false
     },
     "android.skip_update": {
-        "Text": "False",
-        "Activate": false
+        "Text": "True",
+        "Activate": true
     },
     "android.accept_sdk_license": {
         "Text": "True",
