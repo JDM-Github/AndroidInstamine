@@ -148,8 +148,8 @@
         "Activate": false
     },
     "android.accept_sdk_license": {
-        "Text": "False",
-        "Activate": false
+        "Text": "True",
+        "Activate": true
     },
     "android.entrypoint": {
         "Text": "org.kivy.android.PythonActivity",
