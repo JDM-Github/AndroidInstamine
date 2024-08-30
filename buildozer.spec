@@ -1,4 +1,5 @@
 [app]
+leg_level = 2
 # Build by JDM-Buildozer
 
 # (str) Title of your application
