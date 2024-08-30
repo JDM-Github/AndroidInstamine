@@ -315,7 +315,7 @@ class MainWidget(Widget):
 			template_content = template_file.read()
 	
 		formatted_content = template_content.format(dynamic_content=dynamic_content)    
-		with open(os.getcwd() + "/buildozer.spec", "w") as f:
+		with open(os.getcwd() + "/buildozer.spec", "w", encoding="utf-8") as f:
 			f.write(formatted_content)
 		self.buildYml()
 
