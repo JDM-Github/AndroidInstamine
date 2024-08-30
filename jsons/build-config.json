@@ -144,7 +144,7 @@
         "Activate": false
     },
     "android.skip_update": {
-        "Text": "True",
+        "Text": "False",
         "Activate": true
     },
     "android.accept_sdk_license": {
@@ -336,8 +336,8 @@
         "Activate": false
     },
     "p4a.branch": {
-        "Text": "master",
-        "Activate": false
+        "Text": "develop",
+        "Activate": true
     },
     "p4a.commit": {
         "Text": "HEAD",
