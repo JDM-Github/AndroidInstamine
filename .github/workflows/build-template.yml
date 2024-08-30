@@ -10,6 +10,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Accept Android SDK Licenses
+        run: sdkmanager --licenses
+
       # used to cache dependencies with a timeout
       - name: Get Date
         id: get-date
