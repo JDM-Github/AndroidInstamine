@@ -1,12 +1,17 @@
 from kivy.config import Config
-WIDTH  = int(720*0.5) # Must be INT
-HEIGHT = int(1400*0.5) # Must be INT
+WIDTH  = int(720 * 0.5)
+HEIGHT = int(1400 * 0.5)
 Config.set('graphics', 'width', WIDTH)
 Config.set('graphics', 'height', HEIGHT)
-Config.set('graphics', 'resizable', '0')
 Config.write()
 
-from src import MainField, MainScreen, JDMApp
+from kivy.app import App
+from kivy.uix.label import Label
+
+class MainApp(App):
+
+    def build(self):
+        return Label(text="Hello World")
 
 if __name__ == "__main__":
-    JDMApp("JDM-Android Template", (WIDTH, HEIGHT)).run(screen_name="main", screen=MainScreen(), widget=MainField())
+    MainApp().run()

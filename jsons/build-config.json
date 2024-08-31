@@ -56,8 +56,8 @@
         "Activate": false
     },
     "presplash.filename": {
-        "Text": "%(source.dir)s/asset/presplash.png",
-        "Activate": false
+        "Text": "%(source.dir)s/asset/JDMBG.png",
+        "Activate": true
     },
     "icon.filename": {
         "Text": "%(source.dir)s/asset/icon.png",
