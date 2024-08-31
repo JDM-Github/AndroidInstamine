@@ -1,0 +1,2 @@
+kivy[base] @ git+https://github.com/kivy/kivy.git@master
+plyer
