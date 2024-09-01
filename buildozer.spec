@@ -38,7 +38,7 @@ version = 0.0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,plyer,SQLAlchemy==2.0.30,sqlalchemy-cockroachdb==2.0.2,psycopg2==2.9.9,psycopg2-binary==2.9.9
+requirements = python3,hostpython3,kivy,plyer,SQLAlchemy,sqlalchemy-cockroachdb,psycopg2,psycopg2-binary
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -94,7 +94,7 @@ fullscreen = 0
 # icon.adaptive_background.filename = %(source.dir)s/data/icon_bg.png
 
 # (list) Permissions
-android.permissions = READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, MANAGE_EXTERNAL_STORAGE
+android.permissions = INTERNET
 
 # (list) features (adds uses-feature -tags to manifest)
 # android.features = android.hardware.usb.host
