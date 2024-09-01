@@ -6,6 +6,9 @@ Config.set('graphics', 'height', HEIGHT)
 Config.set('graphics', 'resizable', False)
 Config.write()
 
+from android.permissions import request_permissions, Permission
+request_permissions([Permission.INTERNET])
+
 import os
 from kivy.app import App
 from kivy.uix.image import Image
