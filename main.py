@@ -7,13 +7,13 @@ Config.set('graphics', 'resizable', False)
 Config.write()
 
 from kivy.app import App
-from kivy.uix.image import Image
+# from kivy.uix.image import Image
 from kivy.uix.label import Label
 
 class MainApp(App):
 
     def build(self):
-        return Image(source="assets/JDMBG.png")
+        return Label(text="assets/JDMBG.png")
 
 if __name__ == "__main__":
     MainApp().run()
