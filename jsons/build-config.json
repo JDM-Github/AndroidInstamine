@@ -28,8 +28,8 @@
         "Activate": false
     },
     "source.exclude_dirs": {
-        "Text": "tests, bin, venv",
-        "Activate": false
+        "Text": "tests, bin, venv, buildozer, .github",
+        "Activate": true
     },
     "source.exclude_patterns": {
         "Text": "license,images/*/*.jpg",
@@ -48,7 +48,7 @@
         "Activate": false
     },
     "requirements": {
-        "Text": "python3,kivy,plyer",
+        "Text": "python3,kivy,plyer,SQLAlchemy==2.0.30,sqlalchemy-cockroachdb==2.0.2,psycopg2==2.9.9,psycopg2-binary==2.9.9",
         "Activate": true
     },
     "requirements.source.kivy": {
@@ -60,8 +60,8 @@
         "Activate": true
     },
     "icon.filename": {
-        "Text": "%(source.dir)s/asset/icon.png",
-        "Activate": false
+        "Text": "%(source.dir)s/assets/JDMBG.png",
+        "Activate": true
     },
     "orientation": {
         "Text": "portrait",

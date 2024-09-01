@@ -23,7 +23,7 @@ source.include_exts = py,png,jpg,kv,atlas,ttf,mp3,json
 # source.exclude_exts = spec
 
 # (list) List of directory to exclude (let empty to not exclude anything)
-# source.exclude_dirs = tests, bin, venv
+source.exclude_dirs = tests, bin, venv, buildozer, .github
 
 # (list) List of exclusions using pattern matching
 # Do not prefix with './'
@@ -38,7 +38,7 @@ version = 0.0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,plyer
+requirements = python3,kivy,plyer,SQLAlchemy==2.0.30,sqlalchemy-cockroachdb==2.0.2,psycopg2==2.9.9,psycopg2-binary==2.9.9
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -48,7 +48,7 @@ requirements = python3,kivy,plyer
 presplash.filename = %(source.dir)s/assets/JDMBG.png
 
 # (str) Icon of the application
-# icon.filename = %(source.dir)s/asset/icon.png
+icon.filename = %(source.dir)s/assets/JDMBG.png
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = portrait
