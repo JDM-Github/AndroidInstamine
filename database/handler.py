@@ -8,7 +8,6 @@ from sqlalchemy.dialects.postgresql.base import PGDialect
 PGDialect._get_server_version_info = lambda *_: (24, 2, 0) 
 
 
-
 class DatabaseHandler:
 
 	def __init__(self, host, username, password, port):
