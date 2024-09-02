@@ -188,10 +188,7 @@ android.accept_sdk_license = True
 # android.add_assets = 
 
 # (list) Gradle dependencies to add
-android.gradle_dependencies = com.google.firebase:firebase-auth,com.google.firebase:firebase-database,
-    com.google.firebase:firebase-firestore,com.google.firebase:firebase-storage,
-    com.google.firebase:firebase-analytics
-
+# android.gradle_dependencies = 
 # (bool) Enable AndroidX support. Enable when 'android.gradle_dependencies'
 # contains an 'androidx' package, or any package from Kotlin source.
 # android.enable_androidx requires android.api >= 28
