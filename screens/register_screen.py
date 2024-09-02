@@ -1,11 +1,11 @@
 import json
+import requests  # Import the requests library
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
-from kivy.network.urlrequest import UrlRequest
 
 class RegisterScreen(Screen):
 	def __init__(self, **kwargs):
@@ -33,10 +33,17 @@ class RegisterScreen(Screen):
 			'email': self.email.text,
 			'password': self.password.text
 		}
-		UrlRequest(
-			f'{self.manager.url_link}/.netlify/functions/api/register',
-			req_headers={'Content-Type': 'application/json'},
-			req_body=json.dumps(data), on_success=self.on_success, on_failure=self.on_failure, on_error=self.on_error)
+		try:
+			response = requests.post(
+				f'{self.manager.url_link}/.netlify/functions/api/register',
+				headers={'Content-Type': 'application/json'},
+				data=json.dumps(data)
+			)
+			response.raise_for_status()  # Raise an error for bad responses
+			result = response.json()
+			self.on_success(None, result)
+		except requests.RequestException as e:
+			self.on_error(None, e)
 
 	def on_success(self, request, result):
 		print(result['otp'])
@@ -50,6 +57,7 @@ class RegisterScreen(Screen):
 
 	def on_error(self, request, error):
 		print(f"Error: {error}")
+		self.show_error_popup('Failed to send request.')
 
 	def go_to_login(self, instance):
 		self.manager.current = 'login'

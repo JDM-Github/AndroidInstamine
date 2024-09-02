@@ -2,7 +2,7 @@ from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager
 from screens import LoginScreen, RegisterScreen, VerificationScreen, SuccessScreen
 
-DEVELOPMENT = True
+DEVELOPMENT = False
 class Manager(ScreenManager):
 
 	def __init__(self, **kwargs):
