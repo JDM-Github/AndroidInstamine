@@ -1,3 +1,4 @@
+import json
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
 from kivy.uix.label import Label
@@ -33,19 +34,19 @@ class RegisterScreen(Screen):
 			'password': self.password.text
 		}
 		UrlRequest(
-			'https://test888.netlify.app/.netlify/functions/api/register',
-			req_body=str(data), on_success=self.on_success, on_failure=self.on_failure, on_error=self.on_error)
+			f'{self.manager.url_link}/.netlify/functions/api/register',
+			req_headers={'Content-Type': 'application/json'},
+			req_body=json.dumps(data), on_success=self.on_success, on_failure=self.on_failure, on_error=self.on_error)
 
 	def on_success(self, request, result):
-		self.show_success()
-
-		print("Registration successful!")
-		print(result)
-		self.manager.current = 'login'
+		print(result['otp'])
+		self.manager.get_screen('verify').to_verify = result['otp']
+		self.manager.current = 'verify'
 
 	def on_failure(self, request, result):
 		print("Registration failed.")
 		print(result)
+		self.show_error_popup(result['message'])
 
 	def on_error(self, request, error):
 		print(f"Error: {error}")
@@ -53,8 +54,8 @@ class RegisterScreen(Screen):
 	def go_to_login(self, instance):
 		self.manager.current = 'login'
 
-	def show_success(self):
-		popup = Popup(title='Register successful',
-					  content=Label(text='You successfuly register an account'),
+	def show_error_popup(self, message):
+		popup = Popup(title='Register Failed',
+					  content=Label(text=message),
 					  size_hint=(0.8, 0.4))
 		popup.open()

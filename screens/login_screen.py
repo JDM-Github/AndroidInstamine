@@ -30,15 +30,12 @@ class LoginScreen(Screen):
 			'password': self.password.text
 		}
 		UrlRequest(
-			'https://test888.netlify.app/.netlify/functions/api/login',
+			f'{self.manager.url_link}/.netlify/functions/api/login',
 			req_body=str(data), on_success=self.on_success, on_failure=self.on_failure, on_error=self.on_error)
 
 
 	def on_success(self, request, result):
-		print(result['otp'])
-
-		self.manager.get_screen('verify').to_verify = result['otp']
-		self.manager.current = 'verify'
+		self.manager.current = 'success'
 
 	def on_failure(self, request, result):
 		print("Login failed.")

@@ -24,12 +24,19 @@ class VerificationScreen(Screen):
 
 	def verify_code(self, instance):
 		if self.code_input.text == self.to_verify:
-			self.manager.current = 'success'
+			self.show_success()
+			self.manager.current = 'login'
 		else:
 			self.show_error_popup()
 
 	def show_error_popup(self):
 		popup = Popup(title='Error',
 					  content=Label(text='Incorrect verification code!'),
+					  size_hint=(0.8, 0.4))
+		popup.open()
+
+	def show_success(self):
+		popup = Popup(title='Register successful',
+					  content=Label(text='You successfuly register an account'),
 					  size_hint=(0.8, 0.4))
 		popup.open()
