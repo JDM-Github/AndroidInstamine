@@ -35,7 +35,7 @@ class MainApp(App):
 		# db = firestore.client()
 
 	def build(self):
-		return Label(text=str())
+		return Label(text="Hello World")
 
 if __name__ == "__main__":
 	MainApp().run()
