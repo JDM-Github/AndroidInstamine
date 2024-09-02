@@ -5,10 +5,10 @@
 title = JDM-Template
 
 # (str) Package name
-package.name = JDM_template
+package.name = test
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = org.jdm.template
+package.domain = org.jdm
 
 # (str) Source code where the main.py live
 source.dir = .
@@ -38,7 +38,7 @@ version = 0.0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,hostpython3,pyjnius,kivy,plyer,firebase-admin
+requirements = python3,hostpython3,pyjnius,kivy,plyer,https://github.com/SimpleJnius/sj-firebase-python/archive/refs/heads/master.zip
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -100,7 +100,7 @@ android.permissions = android.permission.INTERNET
 # android.features = android.hardware.usb.host
 
 # (int) Target Android API, should be as high as possible.
-# ndroid.api = 34
+android.api = 34
 
 # (int) Minimum API your APK / AAB will support.
 # android.minapi = 21
@@ -188,7 +188,10 @@ android.accept_sdk_license = True
 # android.add_assets = 
 
 # (list) Gradle dependencies to add
-# android.gradle_dependencies = 
+android.gradle_dependencies = io.github.simplejnius:sjfirebase:1.0.0,
+    com.google.firebase:firebase-auth,com.google.firebase:firebase-database,
+    com.google.firebase:firebase-firestore,com.google.firebase:firebase-storage,
+    com.google.firebase:firebase-analytics
 # (bool) Enable AndroidX support. Enable when 'android.gradle_dependencies'
 # contains an 'androidx' package, or any package from Kotlin source.
 # android.enable_androidx requires android.api >= 28
@@ -297,10 +300,10 @@ android.allow_backup = True
 # p4a.url = 
 
 # (str) python-for-android fork to use in case if p4a.url is not specified, defaults to upstream (kivy)
-# p4a.fork = SimpleJnius
+p4a.fork = SimpleJnius
 
 # (str) python-for-android branch to use, defaults to master
-p4a.branch = develop
+p4a.branch = pyjnius
 
 # (str) python-for-android specific commit to use, defaults to HEAD, must be within p4a.branch
 # p4a.commit = HEAD
