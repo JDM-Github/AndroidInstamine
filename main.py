@@ -6,8 +6,8 @@
 # Config.set('graphics', 'resizable', False)
 # Config.write()
 
-import firebase_admin
-from firebase_admin import credentials, firestore
+# import firebase_admin
+# from firebase_admin import credentials, firestore
 
 import os
 from kivy.app import App
