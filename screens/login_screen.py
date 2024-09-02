@@ -1,5 +1,5 @@
 import json
-import requests  # Import the requests library
+import requests
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
 from kivy.uix.label import Label
@@ -31,14 +31,13 @@ class LoginScreen(Screen):
 			'username': self.username.text,
 			'password': self.password.text
 		}
-		# Use requests to make a POST request
 		try:
 			response = requests.post(
 				f'{self.manager.url_link}/.netlify/functions/api/login',
 				headers={'Content-Type': 'application/json'},
 				data=json.dumps(data)
 			)
-			response.raise_for_status()  # Raise an error for bad responses
+			response.raise_for_status()
 			result = response.json()  # Parse JSON response
 			self.on_success(None, result)
 		except requests.RequestException as e:
