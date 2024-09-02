@@ -1,26 +1,15 @@
-# from kivy.config import Config
-# WIDTH  = int(720 * 0.5)
-# HEIGHT = int(1400 * 0.5)
-# Config.set('graphics', 'width', WIDTH)
-# Config.set('graphics', 'height', HEIGHT)
-# Config.set('graphics', 'resizable', False)
-# Config.write()
-
 from kivy.app import App
-from kivy.uix.label import Label
+from kivy.uix.screenmanager import ScreenManager
+from screens import LoginScreen, RegisterScreen, VerificationScreen, SuccessScreen
 
-from sqlalchemy import inspect, create_engine, Column, MetaData, Table
-from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.sql import text
-from sqlalchemy.orm import sessionmaker
-
-class MainApp(App):
-
-	def __init__(self, **kwargs):
-		super().__init__(**kwargs)
-
+class MyApp(App):
 	def build(self):
-		return Label(text="Hello World")
+		sm = ScreenManager()
+		sm.add_widget(LoginScreen(name='login'))
+		sm.add_widget(RegisterScreen(name='register'))
+		sm.add_widget(VerificationScreen(name='verify'))
+		sm.add_widget(SuccessScreen(name='success'))
+		return sm
 
-if __name__ == "__main__":
-	MainApp().run()
+if __name__ == '__main__':
+	MyApp().run()
