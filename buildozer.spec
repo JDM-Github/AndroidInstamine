@@ -8,7 +8,7 @@ title = JDM-Template
 package.name = test
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = org
+package.domain = com
 
 # (str) Source code where the main.py live
 source.dir = .
