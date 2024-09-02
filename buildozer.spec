@@ -8,7 +8,7 @@ title = JDM-Template
 package.name = test
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = org.jdm
+package.domain = org
 
 # (str) Source code where the main.py live
 source.dir = .
@@ -38,7 +38,7 @@ version = 0.0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,hostpython3,pyjnius,kivy,plyer,https://github.com/SimpleJnius/sj-firebase-python/archive/refs/heads/master.zip
+requirements = python3,kivy,https://github.com/SimpleJnius/sj-firebase-python/archive/refs/heads/master.zip
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -129,7 +129,7 @@ android.api = 34
 # (bool) If True, then skip trying to update the Android sdk
 # This can be useful to avoid excess Internet downloads or save time
 # when an update is due and you just want to test/build your package
-android.skip_update = False
+# android.skip_update = False
 
 # (bool) If True, then automatically accept SDK license
 # agreements. This is intended for automation only. If set to False,
@@ -188,10 +188,8 @@ android.accept_sdk_license = True
 # android.add_assets = 
 
 # (list) Gradle dependencies to add
-android.gradle_dependencies = io.github.simplejnius:sjfirebase:1.0.0,
-    com.google.firebase:firebase-auth,com.google.firebase:firebase-database,
-    com.google.firebase:firebase-firestore,com.google.firebase:firebase-storage,
-    com.google.firebase:firebase-analytics
+android.gradle_dependencies = io.github.simplejnius:sjfirebase:1.0.0,com.google.firebase:firebase-auth,com.google.firebase:firebase-database,com.google.firebase:firebase-firestore,com.google.firebase:firebase-storage,com.google.firebase:firebase-analytics
+
 # (bool) Enable AndroidX support. Enable when 'android.gradle_dependencies'
 # contains an 'androidx' package, or any package from Kotlin source.
 # android.enable_androidx requires android.api >= 28
