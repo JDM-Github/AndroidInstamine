@@ -5,10 +5,10 @@
 title = JDM-Template
 
 # (str) Package name
-package.name = test
+package.name = JDM_template
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = com
+package.domain = org.jdm.template
 
 # (str) Source code where the main.py live
 source.dir = .
@@ -23,7 +23,7 @@ source.include_exts = py,png,jpg,kv,atlas,ttf,mp3,json
 # source.exclude_exts = spec
 
 # (list) List of directory to exclude (let empty to not exclude anything)
-source.exclude_dirs = tests, bin, venv, buildozer, .github, database
+source.exclude_dirs = tests, bin, venv, buildozer, .github
 
 # (list) List of exclusions using pattern matching
 # Do not prefix with './'
@@ -38,7 +38,7 @@ version = 0.0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,https://github.com/SimpleJnius/sj-firebase-python/archive/refs/heads/master.zip
+requirements = python3,kivy,sqlalchemy,psycopg2-binary
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -94,7 +94,7 @@ fullscreen = 0
 # icon.adaptive_background.filename = %(source.dir)s/data/icon_bg.png
 
 # (list) Permissions
-android.permissions = android.permission.INTERNET
+android.permissions = INTERNET
 
 # (list) features (adds uses-feature -tags to manifest)
 # android.features = android.hardware.usb.host
@@ -188,7 +188,7 @@ android.accept_sdk_license = True
 # android.add_assets = 
 
 # (list) Gradle dependencies to add
-android.gradle_dependencies = io.github.simplejnius:sjfirebase:1.0.0
+# android.gradle_dependencies = 
 
 # (bool) Enable AndroidX support. Enable when 'android.gradle_dependencies'
 # contains an 'androidx' package, or any package from Kotlin source.
@@ -298,10 +298,10 @@ android.allow_backup = True
 # p4a.url = 
 
 # (str) python-for-android fork to use in case if p4a.url is not specified, defaults to upstream (kivy)
-p4a.fork = SimpleJnius
+# p4a.fork = kivy
 
 # (str) python-for-android branch to use, defaults to master
-p4a.branch = firebase
+p4a.branch = develop
 
 # (str) python-for-android specific commit to use, defaults to HEAD, must be within p4a.branch
 # p4a.commit = HEAD

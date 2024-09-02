@@ -8,7 +8,7 @@
 
 from kivy.app import App
 from kivy.uix.label import Label
-# from database import DatabaseHandler
+from database import DatabaseHandler
 
 class MainApp(App):
 
