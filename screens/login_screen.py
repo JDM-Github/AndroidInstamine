@@ -58,10 +58,10 @@ class LoginScreen(Screen):
 		self.logo = CircleImage(source='assets/JDMBG.png', size_hint=(None, None), pos_hint={"center_x": 0.5}, size=(self.width * 0.65, self.width * 0.65))
 		layout.add_widget(self.logo)
 
-		self.username = RoundedTextInput(hint_text="Username", icon_source='assets/JDMBG.png')
+		self.username = RoundedTextInput(hint_text="Username", icon_source='assets/user.png')
 		self.password = RoundedTextInput(hint_text="Password", password=True,
-			icon_source='assets/JDMBG.png',
-			eye_icon_source='assets/JDMBG.png')
+			icon_source='assets/pass.png',
+			eye_icon_source='assets/close.png')
 
 		login_btn = CustomButton(self.manager, text="Login", on_press=self.login)
 		register_btn = CustomButton(self.manager, text="Create an account", on_press=self.go_to_register)

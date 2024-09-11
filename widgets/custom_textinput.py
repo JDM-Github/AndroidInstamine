@@ -39,7 +39,7 @@ class RoundedTextInput(Widget):
 		left_padding  = dp(20)
 		right_padding = dp(20)
 		if icon_source:
-			self.icon = Image(source=icon_source)
+			self.icon = Image(source=icon_source, color=fg_color)
 			self.icon.size_hint = (None, None)
 			self.icon.size = (dp(20), dp(20))
 			self.icon.pos_hint = {"center_y": 0.5}
@@ -47,12 +47,13 @@ class RoundedTextInput(Widget):
 			left_padding = dp(40)
 
 		if eye_icon_source:
-			self.eye_icon = Image(source=eye_icon_source)
+			self.eye_icon = Image(source=eye_icon_source, color=fg_color)
 			self.eye_icon.size_hint = (None, None)
 			self.eye_icon.size = (dp(20), dp(20))
 			self.eye_icon.pos_hint = {"center_y": 0.5}
 			self.add_widget(self.eye_icon)
 			right_padding = dp(40)
+
 
 		self.input.padding = [left_padding, 0, right_padding, 0]
 
@@ -61,6 +62,19 @@ class RoundedTextInput(Widget):
 			self.rounded_rect = Line(rounded_rectangle=(self.x, self.y, self.width, self.height, dp(20)), width=dp(1.2))
 
 		self.bind(pos=self.update_rect, size=self.update_rect)
+
+	def on_touch_down(self, touch):
+		if (self.collide_point(*touch.pos)
+			and hasattr(self, 'eye_icon')
+			and self.eye_icon.collide_point(*touch.pos)):
+			if self.eye_icon.source == "assets/close.png":
+				self.eye_icon.source = "assets/show.png"
+				self.input.password = False
+			else:
+				self.eye_icon.source = "assets/close.png"
+				self.input.password = True
+		
+		return super().on_touch_down(touch)
 
 	def update_rect(self, *args):
 		self.rounded_rect.rounded_rectangle = (self.x, self.y, self.width, self.height, dp(20))
@@ -73,3 +87,4 @@ class RoundedTextInput(Widget):
 
 		if hasattr(self, 'eye_icon'):
 			self.eye_icon.pos = (self.x + self.width - dp(30), self.y + (self.height - self.eye_icon.height) / 2)
+

@@ -24,7 +24,9 @@ class Manager(ScreenManager):
 
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
-		self.size = (WIDTH, HEIGHT)
+		if platform != "Android":
+			self.size = (WIDTH, HEIGHT)
+
 		self.theme = OriginalColor()
 		self.url_link = "http://localhost:8888"
 

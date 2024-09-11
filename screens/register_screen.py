@@ -66,15 +66,15 @@ class RegisterScreen(Screen):
 
 		widget = Widget(size=self.manager.size, pos=(0, 0))
 		layout = BoxLayout(size=self.manager.size, orientation='vertical', padding=10, spacing=10)
-		
+
 		main_color     = self.manager.theme.main_color
 		main_color_88  = self.manager.theme.main_color_88
-		self.username  = RoundedTextInput(icon_source='assets/JDMBG.png', line_color=main_color, fg_color=main_color, hint_color=main_color_88, hint_text="Username")
-		self.email     = RoundedTextInput(icon_source='assets/JDMBG.png', line_color=main_color, fg_color=main_color, hint_color=main_color_88, hint_text="Email")
-		self.password  = RoundedTextInput(icon_source='assets/JDMBG.png', line_color=main_color, fg_color=main_color,
-			eye_icon_source='assets/eye.png', hint_color=main_color_88, hint_text="Password", password=True)
-		self.cpassword = RoundedTextInput(icon_source='assets/JDMBG.png', line_color=main_color, fg_color=main_color,
-			eye_icon_source='assets/eye.png', hint_color=main_color_88, hint_text="Confirm Password", password=True)
+		self.username  = RoundedTextInput(icon_source='assets/user.png', line_color=main_color, fg_color=main_color, hint_color=main_color_88, hint_text="Username")
+		self.email     = RoundedTextInput(icon_source='assets/email.png', line_color=main_color, fg_color=main_color, hint_color=main_color_88, hint_text="Email")
+		self.password  = RoundedTextInput(icon_source='assets/pass.png', line_color=main_color, fg_color=main_color,
+			eye_icon_source='assets/close.png', hint_color=main_color_88, hint_text="Password", password=True)
+		self.cpassword = RoundedTextInput(icon_source='assets/pass.png', line_color=main_color, fg_color=main_color,
+			eye_icon_source='assets/close.png', hint_color=main_color_88, hint_text="Confirm Password", password=True)
 		
 		register_btn      = CustomButton(self.manager, text="Sign Up", on_press=self.register)
 
