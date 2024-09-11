@@ -65,7 +65,7 @@ class RegisterScreen(Screen):
 		self.clear_widgets()
 
 		widget = Widget(size=self.manager.size, pos=(0, 0))
-		layout = BoxLayout(size=self.manager.size, orientation='vertical', padding=10, spacing=10)
+		layout = BoxLayout(size=self.manager.size, orientation='vertical', padding=dp(10), spacing=dp(10))
 
 		main_color     = self.manager.theme.main_color
 		main_color_88  = self.manager.theme.main_color_88

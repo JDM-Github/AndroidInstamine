@@ -54,7 +54,7 @@ class LoginScreen(Screen):
 
 		widget = Widget(size=self.manager.size, pos=(0, 0))
 
-		layout = BoxLayout(orientation='vertical', padding=20, spacing=20, size=self.manager.size)
+		layout = BoxLayout(orientation='vertical', padding=dp(20), spacing=dp(20), size=self.manager.size)
 		self.logo = CircleImage(source='assets/JDMBG.png', size_hint=(None, None), pos_hint={"center_x": 0.5}, size=(self.width * 0.65, self.width * 0.65))
 		layout.add_widget(self.logo)
 
