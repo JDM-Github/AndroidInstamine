@@ -1,15 +1,15 @@
-from kivy.config import Config
+# from kivy.config import Config
 WIDTH  = int(750  * 0.5) 
 HEIGHT = int(1400 * 0.5) 
-Config.set('graphics', 'width', WIDTH)
-Config.set('graphics', 'height', HEIGHT)
-Config.set('graphics', 'resizable', 0)
-Config.write()
+# Config.set('graphics', 'width', WIDTH)
+# Config.set('graphics', 'height', HEIGHT)
+# Config.set('graphics', 'resizable', 0)
+# Config.write()
 
 from kivy.utils import platform
 from kivy.core.window import Window
 
-if platform != "Android":
+if platform == "win":
 	Window.size  = (WIDTH, HEIGHT)
 	Window.top   = 30
 	Window.left  = 1
