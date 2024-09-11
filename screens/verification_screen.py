@@ -22,6 +22,9 @@ class VerificationScreen(Screen):
 
 		self.add_widget(layout)
 
+	def display_design(self):
+		pass
+
 	def verify_code(self, instance):
 		if self.code_input.text == self.to_verify:
 			self.show_success()

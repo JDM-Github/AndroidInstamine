@@ -11,3 +11,6 @@ class SuccessScreen(Screen):
 		layout.add_widget(self.label)
 		
 		self.add_widget(layout)
+
+	def display_design(self):
+		pass
