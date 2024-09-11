@@ -15,7 +15,7 @@ jobs:
           work-dir: .
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: JDM_template-0.0.1
           path: ./bin/*.apk
