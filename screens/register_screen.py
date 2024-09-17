@@ -17,12 +17,14 @@ from kivy.utils import get_color_from_hex as GetColor
 from kivy.graphics import Rectangle, RoundedRectangle, Color, Line, Ellipse
 from kivy.uix.screenmanager import SlideTransition, FadeTransition, WipeTransition, SwapTransition
 
-from widgets import RoundedTextInput, CustomButton, LoadingPopup, BackButton
+from widgets import RoundedTextInput, CustomButton, LoadingPopup, BackButton, Utility, ThemedPopup
+from handle_requests import RequestHandler
 
 class TermsAgreement(Widget):
 
-	def __init__(self, root, **kwargs):
+	def __init__(self, manager, **kwargs):
 		super().__init__(**kwargs)
+		self.manager = manager
 		self.size_hint_x = 0.7
 		self.size_hint_y = None
 		self.height = dp(40)
@@ -34,21 +36,34 @@ class TermsAgreement(Widget):
 			font_size=sp(14),
 			text="I agree to the [ref=terms][b]Terms[/b][/ref] and [ref=policy][b]Policy[/b][/ref].",
 			markup=True,
-			color=GetColor(root.theme.main_color)
+			color=GetColor(manager.theme.main_color)
 		)
 		self.layout.add_widget(self.checkbox)
 		self.layout.add_widget(terms_policy_label)
 
 		self.add_widget(self.layout)
 		self.bind(pos=self.update_pos, size=self.update_pos)
+		terms_policy_label.bind(on_ref_press=self._on_ref_press)
 
 	def update_pos(self, *_):
 		self.layout.pos  = self.pos
 		self.layout.size = self.size
 
+	def _on_ref_press(self, *args):
+		if args[1] == "terms":
+			popup = ThemedPopup(
+				self.manager,
+				title='Instamine Terms',
+				message="This is the terms will be Terms")
+			popup.open()
+		elif args[1] == "policy":
+			popup = ThemedPopup(
+				self.manager,
+				title='Instamine Policy',
+				message="Testing Policy")
+			popup.open()
+
 class RegisterScreen(Screen):
-	def __init__(self, **kwargs):
-		super().__init__(**kwargs)
 
 	def display_design(self):
 		self.size = self.manager.size
@@ -57,46 +72,58 @@ class RegisterScreen(Screen):
 			Rectangle(size=self.size)
 
 			Color(rgba=GetColor(self.manager.theme.main_color))
-			RoundedRectangle(pos=(self.x, self.height-dp(250)), size=(self.width, dp(250)), radius=[0, 0, dp(30), dp(30)])
+			height = Utility.get_value_percentage(self.height, 0.25)
+			RoundedRectangle(pos=(self.x, self.height-height), size=(self.width, height), radius=[0, 0, dp(30), dp(30)])
 
 		self.display_widget()
 
 	def display_widget(self):
 		self.clear_widgets()
-
+	
 		widget = Widget(size=self.manager.size, pos=(0, 0))
-		layout = BoxLayout(size=self.manager.size, orientation='vertical', padding=dp(10), spacing=dp(10))
-
+		spacepadd = Utility.get_value_percentage(self.height, 0.015)
+		layout = BoxLayout(size=self.manager.size, orientation='vertical', padding=spacepadd, spacing=spacepadd)
+	
 		main_color     = self.manager.theme.main_color
 		main_color_88  = self.manager.theme.main_color_88
-		self.username  = RoundedTextInput(icon_source='assets/user.png', line_color=main_color, fg_color=main_color, hint_color=main_color_88, hint_text="Username")
-		self.email     = RoundedTextInput(icon_source='assets/email.png', line_color=main_color, fg_color=main_color, hint_color=main_color_88, hint_text="Email")
-		self.password  = RoundedTextInput(icon_source='assets/pass.png', line_color=main_color, fg_color=main_color,
-			eye_icon_source='assets/close.png', hint_color=main_color_88, hint_text="Password", password=True)
-		self.cpassword = RoundedTextInput(icon_source='assets/pass.png', line_color=main_color, fg_color=main_color,
-			eye_icon_source='assets/close.png', hint_color=main_color_88, hint_text="Confirm Password", password=True)
 		
-		register_btn      = CustomButton(self.manager, text="Sign Up", on_press=self.register)
+		self.username    = RoundedTextInput(icon_source='assets/user.png', line_color=main_color, fg_color=main_color, hint_color=main_color_88, hint_text="Username")
+		self.name_layout = BoxLayout       (pos_hint={"center_x": 0.5}, size_hint=(0.8, None), height=dp(60), spacing=dp(10))
+		self.first_name  = RoundedTextInput(line_color=main_color, fg_color=main_color, hint_color=main_color_88, hint_text="First Name", size_hint_x=0.5)
+		self.last_name   = RoundedTextInput(line_color=main_color, fg_color=main_color, hint_color=main_color_88, hint_text="Last Name", size_hint_x=0.5)
+		self.birthday    = RoundedTextInput(icon_source='assets/birthday.png', line_color=main_color, fg_color=main_color, hint_color=main_color_88, hint_text="MM/DD/YYYY", size_hint_y=None, height=dp(60))
+		self.email       = RoundedTextInput(icon_source='assets/email.png', line_color=main_color, fg_color=main_color, hint_color=main_color_88, hint_text="Email")
+		self.password    = RoundedTextInput(icon_source='assets/pass.png', line_color=main_color, fg_color=main_color, eye_icon_source='assets/close.png', hint_color=main_color_88, hint_text="Password", password=True)
+		self.cpassword   = RoundedTextInput(icon_source='assets/pass.png', line_color=main_color, fg_color=main_color, eye_icon_source='assets/close.png', hint_color=main_color_88, hint_text="Confirm Password", password=True)
 
+		register_btn = CustomButton(self.manager, text="Sign Up", on_press=self.register)
+		self.name_layout.add_widget(self.first_name)
+		self.name_layout.add_widget(self.last_name)
+
+		layout.add_widget(self.name_layout)
 		layout.add_widget(self.username)
+		layout.add_widget(self.birthday)
+
 		layout.add_widget(self.email)
 		layout.add_widget(self.password)
 		layout.add_widget(self.cpassword)
-
+	
 		layout.add_widget(Widget(size_hint_y=None, height=dp(10)))
 		layout.add_widget(TermsAgreement(self.manager))
 		layout.add_widget(register_btn)
+	
 
 		layout.add_widget(Widget(size_hint_y=None, height=dp(10)))
-		ref_login = Label(color=GetColor(self.manager.theme.main_color),
+		ref_login = Label(
+			color=GetColor(self.manager.theme.main_color),
 			font_size=sp(14),
 			text="Have an account? [ref=login][b]Sign in[/b][/ref]",
 			markup=True, size_hint_y=None, height=dp(20))
 		ref_login.bind(on_ref_press=self.layout_on_ref_press)
-
 		layout.add_widget(ref_login)
-		layout.add_widget(Widget(size_hint_y=None, height=dp(10)))
+	
 
+		# ADD ALL WIDGET IN WIDGETS TO LAYOUT
 		widget.add_widget(layout)
 		self.back_button = BackButton(self.manager, on_press=self.go_to_login)
 		widget.add_widget(self.back_button)
@@ -128,7 +155,6 @@ class RegisterScreen(Screen):
 		self.password.color.rgba  = GetColor(self.manager.theme.main_color)
 		self.cpassword.color.rgba = GetColor(self.manager.theme.main_color)
 
-		# Validate username
 		if self.username.input.text.strip() == "":
 			self.username.color.rgba = GetColor(self.manager.theme.main_error_color)
 			self._on_error('', "Username cannot be empty. Please enter a valid username.")
@@ -144,23 +170,21 @@ class RegisterScreen(Screen):
 			self._on_error('', "Invalid email format. Please enter a valid email address.")
 			return
 
-		# Validate password
 		if self.password.input.text.strip() == "":
 			self.password.color.rgba = GetColor(self.manager.theme.main_error_color)
 			self._on_error('', "Password cannot be empty. Please enter a valid password.")
 			return
+
 		elif not self.is_strong_password(self.password.input.text):
 			self.password.color.rgba = GetColor(self.manager.theme.main_error_color)
 			self._on_error('', "Password is too weak. It must be at least 8 characters long, include a mix of uppercase and lowercase letters, numbers, and special characters.")
 			return
 
-		# Validate confirm password
 		if self.cpassword.input.text.strip() == "":
 			self.cpassword.color.rgba = GetColor(self.manager.theme.main_error_color)
 			self._on_error('', "Please confirm your password.")
 			return
 
-		# Check if passwords match
 		if self.password.input.text != self.cpassword.input.text:
 			self.password.color.rgba  = GetColor(self.manager.theme.main_error_color)
 			self.cpassword.color.rgba = GetColor(self.manager.theme.main_error_color)
@@ -176,10 +200,10 @@ class RegisterScreen(Screen):
 		Clock.schedule_once(lambda dt: self._on_error(error))
 
 	def show_error_popup(self, message):
-		popup = Popup(title='Register Failed',
-					  content=Label(text=message),
-					  size_hint=(0.8, 0.4))
-
+		popup = ThemedPopup(
+			self.manager,
+			title='Registration Failed',
+			message=message)
 		popup.open()
 
 	def go_to_login(self):
@@ -187,22 +211,15 @@ class RegisterScreen(Screen):
 		self.manager.current = 'login'
 
 	def _register(self):
-		data = {
-			'username': self.username.input.text,
-			'email'   : self.email.input.text,
-			'password': self.password.input.text
-		}
-		try:
-			response = requests.post(
-				f'{self.manager.url_link}/.netlify/functions/api/register',
-				headers={'Content-Type': 'application/json'},
-				data=json.dumps(data)
-			)
-			response.raise_for_status()
-			result = response.json()
-			self.on_success(result)
-		except requests.RequestException as e:
-			self.on_error(e)
+		result, message = RequestHandler.register_request(
+			self.username.input.text,
+			self.email.input.text,
+			self.password.input.text
+		)
+		if result:
+			self.on_success(message)
+		else:
+			self.on_error(message)
 
 	def _on_success(self, result):
 		self.remove_widget(self.loading)

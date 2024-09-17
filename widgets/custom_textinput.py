@@ -37,7 +37,7 @@ class RoundedTextInput(Widget):
 		self.add_widget(self.input)
 
 		left_padding  = dp(20)
-		right_padding = dp(20)
+		self.right_padding = dp(20)
 		if icon_source:
 			self.icon = Image(source=icon_source, color=fg_color)
 			self.icon.size_hint = (None, None)
@@ -52,10 +52,10 @@ class RoundedTextInput(Widget):
 			self.eye_icon.size = (dp(20), dp(20))
 			self.eye_icon.pos_hint = {"center_y": 0.5}
 			self.add_widget(self.eye_icon)
-			right_padding = dp(40)
+			self.right_padding = dp(40)
 
 
-		self.input.padding = [left_padding, 0, right_padding, 0]
+		self.input.padding = [left_padding, 0, 0, 0]
 
 		with self.canvas.before:
 			self.color = Color(rgba=GetColor(line_color))
@@ -73,13 +73,14 @@ class RoundedTextInput(Widget):
 			else:
 				self.eye_icon.source = "assets/close.png"
 				self.input.password = True
-		
+
 		return super().on_touch_down(touch)
 
 	def update_rect(self, *args):
 		self.rounded_rect.rounded_rectangle = (self.x, self.y, self.width, self.height, dp(20))
 
 		self.input.size = self.size
+		self.input.width -= self.right_padding
 		self.input.pos = self.x, self.y-dp(10)
 
 		if hasattr(self, 'icon'):

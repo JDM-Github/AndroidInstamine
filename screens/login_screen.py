@@ -1,5 +1,3 @@
-import json
-import requests
 import threading
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
@@ -16,27 +14,11 @@ from kivy.utils import get_color_from_hex as GetColor
 from kivy.graphics import Rectangle, RoundedRectangle, Color, Line, Ellipse
 from kivy.uix.screenmanager import SlideTransition, FadeTransition, WipeTransition, SwapTransition
 
-from widgets import RoundedTextInput, CustomButton, LoadingPopup, BackButton
-
-class CircleImage(Widget):
-
-	def __init__(self, source='',  **kwargs):
-		super().__init__(**kwargs)
-		self.image = Image(source=source)
-		with self.canvas.before:
-			self.image_circle = Ellipse(texture=self.image.texture, size=self.size, pos=self.pos)
-
-		self.bind(pos=self.update_rect, size=self.update_rect)
-
-	def update_rect(self, *args):
-		self.image_circle.pos  = self.pos
-		self.image_circle.size = self.size
-
+from widgets import CircleImage, RoundedTextInput, CustomButton, LoadingPopup, BackButton, Utility, ThemedPopup
+from handle_requests import RequestHandler
 
 
 class LoginScreen(Screen):
-	def __init__(self, **kwargs):
-		super().__init__(**kwargs)
 
 	def display_design(self):
 		self.size = self.manager.size
@@ -45,16 +27,17 @@ class LoginScreen(Screen):
 			Rectangle(size=self.size)
 
 			Color(rgba=GetColor("#ffffff"))
-			RoundedRectangle(size=(self.width, dp(190)), radius=[dp(30), dp(30), 0, 0])
+			RoundedRectangle(
+				size=(self.width, Utility.get_value_percentage(self.height, 0.25)),
+				radius=[dp(30), dp(30), 0, 0])
 
 		self.display_widget()
 
 	def display_widget(self):
 		self.clear_widgets()
-
 		widget = Widget(size=self.manager.size, pos=(0, 0))
 
-		layout = BoxLayout(orientation='vertical', padding=dp(20), spacing=dp(20), size=self.manager.size)
+		layout = BoxLayout(orientation='vertical', padding=Utility.get_value_percentage(self.height, 0.03), spacing=Utility.get_value_percentage(self.height, 0.03), size=self.manager.size)
 		self.logo = CircleImage(source='assets/JDMBG.png', size_hint=(None, None), pos_hint={"center_x": 0.5}, size=(self.width * 0.65, self.width * 0.65))
 		layout.add_widget(self.logo)
 
@@ -71,55 +54,61 @@ class LoginScreen(Screen):
 
 		layout.add_widget(self.username)
 		layout.add_widget(self.password)
-		layout.add_widget(Widget(size_hint_y=None, height=dp(20)))
+		
+		forgot_password_label = Label(
+			text="[b][ref=forgot_password]Forgot password?[/ref][/b]",
+			size_hint_y=None,
+			height=dp(30),
+			valign='top',
+			halign='center',
+			markup=True,
+			font_size=sp(14),
+		)
+		forgot_password_label.bind(size=forgot_password_label.setter('text_size'))
+		layout.add_widget(forgot_password_label)
 
 		layout.add_widget(login_btn)
 		layout.add_widget(register_btn)
 		layout.add_widget(Widget(size_hint_y=None, height=dp(5)))
 
 		widget.add_widget(layout)
-		self.back_button = BackButton(self.manager, on_press=self.go_to_register)
-		widget.add_widget(self.back_button)
 		self.add_widget(widget)
 
-	def login(self):
-		self.loading = LoadingPopup(self.manager)
-		self.add_widget(self.loading)
-
-		threading.Thread(target=self._login).start()
-
-	def on_success(self, result):
-		Clock.schedule_once(lambda dt: self._on_success(result))
-
-	def on_error(self, error):
-		Clock.schedule_once(lambda dt: self._on_error(error))
+	def layout_on_ref_press(self, *args):
+		if args[1] == "forgot_password":
+			self.go_to_login()
 
 	def go_to_register(self):
 		self.manager.transition = SlideTransition(direction='left', duration=0.5)
 		self.manager.current = 'register'
 
 	def show_error_popup(self, message):
-		popup = Popup(title='Login Failed',
-					  content=Label(text=message),
-					  size_hint=(0.8, 0.4))
+		popup = ThemedPopup(
+			self.manager,
+			title='Login Failed',
+			message=message)
 		popup.open()
 
+	def login(self):
+		self.loading = LoadingPopup(self.manager)
+		self.add_widget(self.loading)
+		threading.Thread(target=self._login).start()
+
 	def _login(self):
-		data = {
-			'username': self.username.input.text,
-			'password': self.password.input.text
-		}
-		try:
-			response = requests.post(
-				f'{self.manager.url_link}/.netlify/functions/api/login',
-				headers={'Content-Type': 'application/json'},
-				data=json.dumps(data)
-			)
-			response.raise_for_status()
-			result = response.json()
-			self.on_success(result)
-		except requests.RequestException as e:
-			self.on_error(e)
+		result, message = RequestHandler.login_request(
+			self.username.input.text,
+			self.password.input.text
+		)
+		if result:
+			self.on_success(message)
+		else:
+			self.on_error(message)
+
+	def on_success(self, result):
+		Clock.schedule_once(lambda dt: self._on_success(result))
+
+	def on_error(self, error):
+		Clock.schedule_once(lambda dt: self._on_error(error))
 
 	def _on_success(self, result):
 		self.remove_widget(self.loading)
