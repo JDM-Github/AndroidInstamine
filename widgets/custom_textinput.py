@@ -16,11 +16,14 @@ class RoundedTextInput(Widget):
 		line_color="#ffffff88",
 		fg_color="#ffffff",
 		hint_color="#ffffff88",
+		size_hint = (0.8, None),
+		height    = dp(40),
+		pos_hint  = {"center_x": 0.5},
 		**kwargs):
 		super().__init__(**kwargs)
-		self.size_hint = (0.8, None)
-		self.height    = dp(40)
-		self.pos_hint  = {"center_x": 0.5}
+		self.size_hint = size_hint
+		self.height    = height
+		self.pos_hint  = pos_hint
 
 		self.input = TextInput(
 			hint_text=hint_text,
@@ -59,7 +62,7 @@ class RoundedTextInput(Widget):
 
 		with self.canvas.before:
 			self.color = Color(rgba=GetColor(line_color))
-			self.rounded_rect = Line(rounded_rectangle=(self.x, self.y, self.width, self.height, dp(20)), width=dp(1.2))
+			self.rounded_rect = Line(rounded_rectangle=(self.x, self.y, self.width, self.height, dp(10)), width=dp(1.2))
 
 		self.bind(pos=self.update_rect, size=self.update_rect)
 
@@ -77,7 +80,7 @@ class RoundedTextInput(Widget):
 		return super().on_touch_down(touch)
 
 	def update_rect(self, *args):
-		self.rounded_rect.rounded_rectangle = (self.x, self.y, self.width, self.height, dp(20))
+		self.rounded_rect.rounded_rectangle = (self.x, self.y, self.width, self.height, dp(10))
 
 		self.input.size = self.size
 		self.input.width -= self.right_padding

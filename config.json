@@ -1,0 +1,9 @@
+{
+	"icon": "",
+
+	"terms": "This is the terms will be Terms",
+	"policy": "This is the policy will be Policy",
+
+	// ILANG TAON UNG USER NA PEDE GUMAMIT
+	"at_least_years_user": 3
+}

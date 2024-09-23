@@ -38,7 +38,7 @@ class LoginScreen(Screen):
 		widget = Widget(size=self.manager.size, pos=(0, 0))
 
 		layout = BoxLayout(orientation='vertical', padding=Utility.get_value_percentage(self.height, 0.03), spacing=Utility.get_value_percentage(self.height, 0.03), size=self.manager.size)
-		self.logo = CircleImage(source='assets/JDMBG.png', size_hint=(None, None), pos_hint={"center_x": 0.5}, size=(self.width * 0.65, self.width * 0.65))
+		self.logo = CircleImage(source=self.manager.main_config['icon'], size_hint=(None, None), pos_hint={"center_x": 0.5}, size=(self.width * 0.65, self.width * 0.65))
 		layout.add_widget(self.logo)
 
 		self.username = RoundedTextInput(hint_text="Username", icon_source='assets/user.png')
@@ -54,7 +54,7 @@ class LoginScreen(Screen):
 
 		layout.add_widget(self.username)
 		layout.add_widget(self.password)
-		
+
 		forgot_password_label = Label(
 			text="[b][ref=forgot_password]Forgot password?[/ref][/b]",
 			size_hint_y=None,
@@ -78,6 +78,10 @@ class LoginScreen(Screen):
 		if args[1] == "forgot_password":
 			self.go_to_login()
 
+	def go_to_home(self):
+		self.manager.transition = FadeTransition(duration=0.1)
+		self.manager.current = 'home'
+
 	def go_to_register(self):
 		self.manager.transition = SlideTransition(direction='left', duration=0.5)
 		self.manager.current = 'register'
@@ -94,15 +98,23 @@ class LoginScreen(Screen):
 		self.add_widget(self.loading)
 		threading.Thread(target=self._login).start()
 
+		# self.go_to_home()
+
 	def _login(self):
-		result, message = RequestHandler.login_request(
-			self.username.input.text,
-			self.password.input.text
-		)
+		# result, message = RequestHandler.create_request(
+		# 	link="login",
+		# 	data={
+		# 		'username': self.username.input.text,
+		# 		'password': self.password.input.text
+		# 	}
+		# )
+		result = True
+		message = {'success': "SUCCESSFULLY LOGIN!"}
 		if result:
 			self.on_success(message)
 		else:
 			self.on_error(message)
+
 
 	def on_success(self, result):
 		Clock.schedule_once(lambda dt: self._on_success(result))
@@ -112,8 +124,10 @@ class LoginScreen(Screen):
 
 	def _on_success(self, result):
 		self.remove_widget(self.loading)
-		if result.get('success'):
-			self.manager.current = 'success'
+		if result and result.get('success', None):
+			self.manager.main_state['already_login'] = True;
+			self.manager.save_json_config("state.json", self.manager.main_state)
+			self.go_to_home()
 		else:
 			self.show_error_popup(result.get('message', 'Login failed.'))
 
@@ -122,4 +136,4 @@ class LoginScreen(Screen):
 		print(f"Error: {error}")
 		self.show_error_popup(error_message)
 
-	
+

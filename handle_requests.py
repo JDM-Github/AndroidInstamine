@@ -14,33 +14,10 @@ class RequestHandler:
 		return RequestHandler.url_link
 
 	@staticmethod
-	def login_request(username, password):
-		data = {
-			'username': username,
-			'password': password
-		}
+	def create_request(link, data={}):
 		try:
 			response = requests.post(
-				f'{RequestHandler.get_link()}/.netlify/functions/api/login',
-				headers={'Content-Type': 'application/json'},
-				data=json.dumps(data)
-			)
-			response.raise_for_status()
-			result = response.json()
-			return True, result
-		except requests.RequestException as e:
-			return False, e
-
-	@staticmethod
-	def register_request(username, email, password):
-		data = {
-			'username': username,
-			'email'   : email,
-			'password': password
-		}
-		try:
-			response = requests.post(
-				f'{RequestHandler.get_link()}/.netlify/functions/api/register',
+				f'{RequestHandler.get_link()}/.netlify/functions/api/{link}',
 				headers={'Content-Type': 'application/json'},
 				data=json.dumps(data)
 			)

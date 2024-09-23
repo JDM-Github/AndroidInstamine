@@ -1,3 +1,5 @@
+import re
+import json
 from kivy.config import Config
 WIDTH  = int(750  * 0.5) 
 HEIGHT = int(1400 * 0.5) 
@@ -16,7 +18,7 @@ if platform == "win":
 
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager
-from screens import LoginScreen, RegisterScreen, VerificationScreen, SuccessScreen, HomeScreen
+from screens import LoginScreen, RegisterScreen, VerificationScreen, HomeScreen
 from theme import OriginalColor
 
 class Manager(ScreenManager):
@@ -25,6 +27,21 @@ class Manager(ScreenManager):
 		super().__init__(**kwargs)
 		self.size = Window.size
 		self.theme = OriginalColor()
+		self.main_config = self.load_json_config("config.json")
+		self.main_state = self.load_json_config("state.json")
+
+	def load_json_config(self, filepath):
+		with open(filepath, 'r') as file:
+			content = file.read()
+
+		content = re.sub(r'//.*', '', content)
+		content = re.sub(r'/\*[\s\S]*?\*/', '', content)
+		return json.loads(content)
+
+	def save_json_config(self, filepath, data):
+		with open(filepath, 'w') as file:
+			json.dump(data, file, indent=4)
+
 
 class MyApp(App):
 	def build(self):
@@ -34,17 +51,18 @@ class MyApp(App):
 		login    = LoginScreen(name='login')
 		register = RegisterScreen(name='register')
 		verify   = VerificationScreen(name='verify')
-		success  = SuccessScreen(name='success')
+
 		sm.add_widget(login)
 		sm.add_widget(register)
 		sm.add_widget(verify)
-		sm.add_widget(success)
+		sm.add_widget(home)
 
 		login.display_design()
 		register.display_design()
 		verify.display_design()
-		success.display_design()
+		home.display_design()
 
+		sm.current = "login" if not sm.main_state['already_login'] else "home"
 
 		return sm
 
