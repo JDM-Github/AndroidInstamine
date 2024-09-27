@@ -64,6 +64,10 @@ class TermsAgreement(Widget):
 				message=self.manager.main_config['policy'])
 			popup.open()
 
+
+
+
+
 class RegisterScreen(Screen):
 
 	def display_design(self):
@@ -77,6 +81,8 @@ class RegisterScreen(Screen):
 			RoundedRectangle(pos=(self.x, self.height-height), size=(self.width, height), radius=[0, 0, dp(30), dp(30)])
 
 		self.display_widget()
+
+
 
 	def display_widget(self):
 		self.clear_widgets()
@@ -96,6 +102,7 @@ class RegisterScreen(Screen):
 			'height': dp(40)
 		}
 
+		
 		self.username    = RoundedTextInput(icon_source='assets/user.png', hint_text="Username", **common_kwargs)
 		self.name_layout = BoxLayout       (pos_hint={"center_x": 0.5}, size_hint=(0.8, None), height=dp(60), spacing=dp(10))
 		self.first_name  = RoundedTextInput(hint_text="First Name", size_hint_x=0.5, **common_kwargs)
@@ -104,6 +111,7 @@ class RegisterScreen(Screen):
 		self.email       = RoundedTextInput(icon_source='assets/email.png', hint_text="Email", **common_kwargs)
 		self.password    = RoundedTextInput(icon_source='assets/pass.png', hint_text="Password", eye_icon_source='assets/close.png', password=True, **common_kwargs)
 		self.cpassword   = RoundedTextInput(icon_source='assets/pass.png', hint_text="Confirm Password", eye_icon_source='assets/close.png', password=True, **common_kwargs)
+
 
 		register_btn = CustomButton(self.manager, text="Sign Up", on_press=self.register)
 		self.name_layout.add_widget(self.first_name)
@@ -136,6 +144,8 @@ class RegisterScreen(Screen):
 		widget.add_widget(layout)
 		self.add_widget(widget)
 
+
+
 	def layout_on_ref_press(self, *args):
 		if args[1] == "login":
 			self.go_to_login()
@@ -158,7 +168,7 @@ class RegisterScreen(Screen):
 			return
 		if not Utility.validate_birthday(self.birthday, error_color, success_color, self.manager.main_config['at_least_years_user'], self._on_error):
 			return
-
+			
 		email_pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
 		if not Utility.validate_email(self.email, email_pattern, error_color, success_color, self._on_error):
 			return
@@ -207,8 +217,8 @@ class RegisterScreen(Screen):
 
 	def _on_success(self, result):
 		self.remove_widget(self.loading)
-		self.manager.get_screen('verify').to_verify = result['otp']
-		self.manager.current = 'verify'
+		# self.manager.get_screen('verify').to_verify = result['otp']
+		self.manager.current = 'login'
 
 	def _on_error(self, error, error_message="Error occurred while processing the request."):
 		self.remove_widget(self.loading)

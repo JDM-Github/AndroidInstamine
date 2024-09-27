@@ -18,7 +18,10 @@ from widgets import CircleImage, RoundedTextInput, CustomButton, LoadingPopup, B
 from handle_requests import RequestHandler
 
 
+
+
 class LoginScreen(Screen):
+
 
 	def display_design(self):
 		self.size = self.manager.size
@@ -33,20 +36,27 @@ class LoginScreen(Screen):
 
 		self.display_widget()
 
+
+
 	def display_widget(self):
 		self.clear_widgets()
 		widget = Widget(size=self.manager.size, pos=(0, 0))
 
-		layout = BoxLayout(orientation='vertical', padding=Utility.get_value_percentage(self.height, 0.03), spacing=Utility.get_value_percentage(self.height, 0.03), size=self.manager.size)
+		layout    = BoxLayout(orientation='vertical', padding=Utility.get_value_percentage(self.height, 0.03), spacing=Utility.get_value_percentage(self.height, 0.03), size=self.manager.size)
+
+
 		self.logo = CircleImage(source=self.manager.main_config['icon'], size_hint=(None, None), pos_hint={"center_x": 0.5}, size=(self.width * 0.65, self.width * 0.65))
 		layout.add_widget(self.logo)
+
+
 
 		self.username = RoundedTextInput(hint_text="Username", icon_source='assets/user.png')
 		self.password = RoundedTextInput(hint_text="Password", password=True,
 			icon_source='assets/pass.png',
 			eye_icon_source='assets/close.png')
 
-		login_btn = CustomButton(self.manager, text="Login", on_press=self.login)
+
+		login_btn    = CustomButton(self.manager, text="Login", on_press=self.login)
 		register_btn = CustomButton(self.manager, text="Create an account", on_press=self.go_to_register)
 
 		layout.add_widget(Label(text="Japan", font_size=sp(56), bold=True, size_hint_y=None, height=dp(20)))
@@ -74,17 +84,23 @@ class LoginScreen(Screen):
 		widget.add_widget(layout)
 		self.add_widget(widget)
 
+
 	def layout_on_ref_press(self, *args):
 		if args[1] == "forgot_password":
 			self.go_to_login()
+
+
 
 	def go_to_home(self):
 		self.manager.transition = FadeTransition(duration=0.1)
 		self.manager.current = 'home'
 
+
 	def go_to_register(self):
 		self.manager.transition = SlideTransition(direction='left', duration=0.5)
 		self.manager.current = 'register'
+
+
 
 	def show_error_popup(self, message):
 		popup = ThemedPopup(
@@ -92,6 +108,8 @@ class LoginScreen(Screen):
 			title='Login Failed',
 			message=message)
 		popup.open()
+
+
 
 	def login(self):
 		self.loading = LoadingPopup(self.manager)
@@ -101,6 +119,7 @@ class LoginScreen(Screen):
 		# self.go_to_home()
 
 	def _login(self):
+
 		# result, message = RequestHandler.create_request(
 		# 	link="login",
 		# 	data={
@@ -119,8 +138,10 @@ class LoginScreen(Screen):
 	def on_success(self, result):
 		Clock.schedule_once(lambda dt: self._on_success(result))
 
+
 	def on_error(self, error):
 		Clock.schedule_once(lambda dt: self._on_error(error))
+
 
 	def _on_success(self, result):
 		self.remove_widget(self.loading)
@@ -130,6 +151,7 @@ class LoginScreen(Screen):
 			self.go_to_home()
 		else:
 			self.show_error_popup(result.get('message', 'Login failed.'))
+
 
 	def _on_error(self, error, error_message="Error occurred while processing the request."):
 		self.remove_widget(self.loading)

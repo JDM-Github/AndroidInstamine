@@ -9,13 +9,13 @@ from kivy.uix.image import Image
 
 class CustomButton(Widget):
 
-	def __init__(self, root, text='', on_press=lambda: None, **kwargs):
+	def __init__(self, root, text='', on_press=lambda: None, size_hint=(0.8, None), radius=[dp(20)], **kwargs):
 		super().__init__(**kwargs)
 		self.root = root
 		self.on_press = on_press
 		self.tdown     = False
 
-		self.size_hint = (0.8, None)
+		self.size_hint = size_hint
 		self.height    = dp(45)
 		self.pos_hint  = {"center_x": 0.5}
 
@@ -24,7 +24,7 @@ class CustomButton(Widget):
 
 		with self.canvas.before:
 			self.color = Color(rgba=GetColor(self.root.theme.main_color))
-			self.rounded_rect = RoundedRectangle(pos=(self.pos), size=self.size, radius=[dp(20)])
+			self.rounded_rect = RoundedRectangle(pos=(self.pos), size=self.size, radius=radius)
 
 		self.bind(pos=self.update_rect, size=self.update_rect)
 
