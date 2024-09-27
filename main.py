@@ -87,6 +87,13 @@
 
 # if __name__ == '__main__':
 # 	MyApp().run()
+# try:
+# 	import cv2
+# except:
+# 	from cv import cv2
+
+import os
+os.environ["KIVY_AUDIO"] = "ffpyplayer"
 
 import yt_dlp
 from kivy.app import App
@@ -96,8 +103,16 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.image import Image
 from kivy.clock import Clock
-from ffpyplayer.player import MediaPlayer
 from kivy.graphics.texture import Texture
+
+# from kivy.app import App
+# from kivy.uix.boxlayout import BoxLayout
+# from kivy.uix.label import Label
+# from kivy.uix.textinput import TextInput
+# from kivy.uix.button import Button
+# from kivy.uix.image import Image
+# from kivy.clock import Clock
+from ffpyplayer.player import MediaPlayer
 
 class LiveStreamApp(App):
     def build(self):
@@ -122,8 +137,6 @@ class LiveStreamApp(App):
 
         # Variable to hold MediaPlayer object
         self.player = None
-
-        self.index = 0
 
         return self.main_layout
 
@@ -156,8 +169,6 @@ class LiveStreamApp(App):
 
     def update_frame(self, dt):
         if self.player is not None:
-        	self.index += dt
-        	self.message_label.text = "TESTING" + str(self.index)
             frame, val = self.player.get_frame()
             if val == 'eof':
                 self.message_label.text = "End of stream"
@@ -170,8 +181,6 @@ class LiveStreamApp(App):
                 texture = Texture.create(size=(img.get_size()), colorfmt='rgb')
                 texture.blit_buffer(buf, colorfmt='rgb', bufferfmt='ubyte')
                 self.video_display.texture = texture
-        else:
-        	self.message_label.text = "No Video"
 
     def on_stop(self):
         if self.player is not None:
