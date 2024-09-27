@@ -156,21 +156,21 @@ class LiveStreamApp(App):
         # else:
         #     self.message_label.text = "Failed to retrieve stream URL."
 
-    def update_frame(self, dt):
-        if self.capture is not None and self.capture.isOpened():
-            ret, frame = self.capture.read()
-            if ret:
-                # Convert the frame to Kivy texture
-                buf = cv2.flip(frame, 0).tobytes()
-                texture = Texture.create(size=(frame.shape[1], frame.shape[0]), colorfmt='bgr')
-                texture.blit_buffer(buf, colorfmt='bgr', bufferfmt='ubyte')
-                self.video_display.texture = texture
-            else:
-                self.message_label.text = "Failed to retrieve frame."
+    # def update_frame(self, dt):
+    #     if self.capture is not None and self.capture.isOpened():
+    #         ret, frame = self.capture.read()
+    #         if ret:
+    #             # Convert the frame to Kivy texture
+    #             buf = cv2.flip(frame, 0).tobytes()
+    #             texture = Texture.create(size=(frame.shape[1], frame.shape[0]), colorfmt='bgr')
+    #             texture.blit_buffer(buf, colorfmt='bgr', bufferfmt='ubyte')
+    #             self.video_display.texture = texture
+    #         else:
+    #             self.message_label.text = "Failed to retrieve frame."
 
-    def on_stop(self):
-        if self.capture is not None:
-            self.capture.release()
+    # def on_stop(self):
+    #     if self.capture is not None:
+    #         self.capture.release()
 
 if __name__ == "__main__":
     LiveStreamApp().run()
