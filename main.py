@@ -123,6 +123,8 @@ class LiveStreamApp(App):
         # Variable to hold MediaPlayer object
         self.player = None
 
+        self.index = 0
+
         return self.main_layout
 
     def get_stream_url(self, yt_url):
@@ -154,6 +156,8 @@ class LiveStreamApp(App):
 
     def update_frame(self, dt):
         if self.player is not None:
+        	self.index += dt
+        	self.message_label.text = "TESTING" + str(self.index)
             frame, val = self.player.get_frame()
             if val == 'eof':
                 self.message_label.text = "End of stream"
@@ -166,6 +170,8 @@ class LiveStreamApp(App):
                 texture = Texture.create(size=(img.get_size()), colorfmt='rgb')
                 texture.blit_buffer(buf, colorfmt='rgb', bufferfmt='ubyte')
                 self.video_display.texture = texture
+        else:
+        	self.message_label.text = "No Video"
 
     def on_stop(self):
         if self.player is not None:
