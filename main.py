@@ -88,7 +88,11 @@
 # if __name__ == '__main__':
 # 	MyApp().run()
 
-import cv2
+try:
+	import cv2
+except:
+	from cv import cv2
+
 # import yt_dlp
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
