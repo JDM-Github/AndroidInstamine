@@ -88,11 +88,6 @@
 # if __name__ == '__main__':
 # 	MyApp().run()
 
-try:
-	import cv2
-except:
-	from cv import cv2
-
 import yt_dlp
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
@@ -101,6 +96,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.image import Image
 from kivy.clock import Clock
+from ffpyplayer.player import MediaPlayer
 from kivy.graphics.texture import Texture
 
 class LiveStreamApp(App):
@@ -124,8 +120,8 @@ class LiveStreamApp(App):
         self.video_display = Image(size_hint=(1, 0.7))
         self.main_layout.add_widget(self.video_display)
 
-        # Variable to hold video capture object
-        self.capture = None
+        # Variable to hold MediaPlayer object
+        self.player = None
 
         return self.main_layout
 
@@ -151,26 +147,29 @@ class LiveStreamApp(App):
         stream_url = self.get_stream_url(yt_url)
         if stream_url:
             self.message_label.text = "Streaming..."
-            self.capture = cv2.VideoCapture(stream_url)
+            self.player = MediaPlayer(stream_url)
             Clock.schedule_interval(self.update_frame, 1.0 / 30.0)  # 30 FPS
         else:
             self.message_label.text = "Failed to retrieve stream URL."
 
     def update_frame(self, dt):
-        if self.capture is not None and self.capture.isOpened():
-            ret, frame = self.capture.read()
-            if ret:
-                # Convert the frame to Kivy texture
-                buf = cv2.flip(frame, 0).tobytes()
-                texture = Texture.create(size=(frame.shape[1], frame.shape[0]), colorfmt='bgr')
-                texture.blit_buffer(buf, colorfmt='bgr', bufferfmt='ubyte')
+        if self.player is not None:
+            frame, val = self.player.get_frame()
+            if val == 'eof':
+                self.message_label.text = "End of stream"
+                Clock.unschedule(self.update_frame)
+                return
+
+            if frame is not None:
+                img, t = frame
+                buf = img.to_bytearray()[0]
+                texture = Texture.create(size=(img.get_size()), colorfmt='rgb')
+                texture.blit_buffer(buf, colorfmt='rgb', bufferfmt='ubyte')
                 self.video_display.texture = texture
-            else:
-                self.message_label.text = "Failed to retrieve frame."
 
     def on_stop(self):
-        if self.capture is not None:
-            self.capture.release()
+        if self.player is not None:
+            self.player.close_player()
 
 if __name__ == "__main__":
     LiveStreamApp().run()
