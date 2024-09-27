@@ -45,10 +45,10 @@ requirements = python3,kivy,requests,urllib3,certifi,chardet,openssl,opencv-pyth
 # requirements.source.kivy = ../../kivy
 
 # (str) Presplash of the application
-presplash.filename = %(source.dir)s/assets/JDMBG.png
+presplash.filename = %(source.dir)s/assets/user.png
 
 # (str) Icon of the application
-icon.filename = %(source.dir)s/assets/JDMBG.png
+icon.filename = %(source.dir)s/assets/user.png
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = portrait
