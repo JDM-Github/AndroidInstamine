@@ -89,7 +89,7 @@
 # 	MyApp().run()
 
 import cv2
-import yt_dlp
+# import yt_dlp
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
@@ -125,18 +125,18 @@ class LiveStreamApp(App):
 
         return self.main_layout
 
-    def get_stream_url(self, yt_url):
-        ydl_opts = {'format': 'best'}
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            try:
-                info_dict = ydl.extract_info(yt_url, download=False)
-                formats = info_dict.get('formats', None)
-                for f in formats:
-                    if f.get('vcodec') != 'none' and f.get('acodec') != 'none':
-                        return f['url']
-            except Exception as e:
-                self.message_label.text = f"Error: {str(e)}"
-                return None
+    # def get_stream_url(self, yt_url):
+    #     ydl_opts = {'format': 'best'}
+    #     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+    #         try:
+    #             info_dict = ydl.extract_info(yt_url, download=False)
+    #             formats = info_dict.get('formats', None)
+    #             for f in formats:
+    #                 if f.get('vcodec') != 'none' and f.get('acodec') != 'none':
+    #                     return f['url']
+    #         except Exception as e:
+    #             self.message_label.text = f"Error: {str(e)}"
+    #             return None
 
     def start_stream(self, instance):
         yt_url = self.url_input.text.strip()
@@ -144,13 +144,13 @@ class LiveStreamApp(App):
             self.message_label.text = "Please enter a valid YouTube URL."
             return
 
-        stream_url = self.get_stream_url(yt_url)
-        if stream_url:
-            self.message_label.text = "Streaming..."
-            self.capture = cv2.VideoCapture(stream_url)
-            Clock.schedule_interval(self.update_frame, 1.0 / 30.0)  # 30 FPS
-        else:
-            self.message_label.text = "Failed to retrieve stream URL."
+        # stream_url = self.get_stream_url(yt_url)
+        # if stream_url:
+        #     self.message_label.text = "Streaming..."
+        #     self.capture = cv2.VideoCapture(stream_url)
+        #     Clock.schedule_interval(self.update_frame, 1.0 / 30.0)  # 30 FPS
+        # else:
+        #     self.message_label.text = "Failed to retrieve stream URL."
 
     def update_frame(self, dt):
         if self.capture is not None and self.capture.isOpened():
