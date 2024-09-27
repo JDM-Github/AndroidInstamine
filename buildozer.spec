@@ -38,7 +38,7 @@ version = 0.0.2
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,requests,urllib3,certifi,chardet,openssl,opencv-python,yt-dlp
+requirements = python3,kivy,requests,urllib3,certifi,chardet,openssl,opencv-python,yt-dlp,numpy
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -94,7 +94,7 @@ fullscreen = 0
 # icon.adaptive_background.filename = %(source.dir)s/data/icon_bg.png
 
 # (list) Permissions
-android.permissions = INTERNET, WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE
+android.permissions = INTERNET, WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE, CAMERA
 
 # (list) features (adds uses-feature -tags to manifest)
 # android.features = android.hardware.usb.host
