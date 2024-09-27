@@ -103,13 +103,13 @@ android.permissions = INTERNET, WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE, C
 android.api = 34
 
 # (int) Minimum API your APK / AAB will support.
-# android.minapi = 21
+android.minapi = 24
 
 # (int) Android SDK version to use
 # android.sdk = 20
 
 # (str) Android NDK version to use
-# android.ndk = 
+# android.ndk = 23b
 
 # (int) Android NDK API to use. This is the minimum API your app will support, it should usually match android.minapi.
 # android.ndk_api = 24
