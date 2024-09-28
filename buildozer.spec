@@ -38,7 +38,7 @@ version = 0.0.2
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,requests,urllib3,certifi,chardet,openssl,yt-dlp,ffpyplayer,ffpyplayer_codecs,ffmpeg,httplib2,libshine
+requirements = python3,kivy,requests,urllib3,certifi,chardet,openssl,yt-dlp,ffpyplayer,ffpyplayer_codecs,ffmpeg
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
