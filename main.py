@@ -92,99 +92,53 @@
 # except:
 # 	from cv import cv2
 
-import os
-os.environ["KIVY_AUDIO"] = "ffpyplayer"
-
-import yt_dlp
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
-from kivy.uix.image import Image
-from kivy.clock import Clock
-from kivy.graphics.texture import Texture
+from kivy.uix.video import Video
+import yt_dlp
 
-# from kivy.app import App
-# from kivy.uix.boxlayout import BoxLayout
-# from kivy.uix.label import Label
-# from kivy.uix.textinput import TextInput
-# from kivy.uix.button import Button
-# from kivy.uix.image import Image
-# from kivy.clock import Clock
-from ffpyplayer.player import MediaPlayer
+class YouTubeLiveStream(BoxLayout):
+    def __init__(self, **kwargs):
+        super(YouTubeLiveStream, self).__init__(**kwargs)
+        self.orientation = 'vertical'
 
-class LiveStreamApp(App):
-    def build(self):
-        self.main_layout = BoxLayout(orientation='vertical')
+        # Input field for YouTube URL
+        self.url_input = TextInput(hint_text='Enter YouTube Live URL', size_hint=(1, 0.1))
+        self.add_widget(self.url_input)
 
-        # Text input for YouTube URL
-        self.url_input = TextInput(hint_text='Enter YouTube URL', size_hint=(1, 0.1))
-        self.main_layout.add_widget(self.url_input)
+        # Button to load stream
+        self.stream_button = Button(text='Stream Video', size_hint=(1, 0.1))
+        self.stream_button.bind(on_press=self.get_live_stream_url)
+        self.add_widget(self.stream_button)
 
-        # Submit button
-        submit_button = Button(text='Submit', size_hint=(1, 0.1))
-        submit_button.bind(on_press=self.start_stream)
-        self.main_layout.add_widget(submit_button)
+        # Video player
+        self.video = Video(size_hint=(1, 0.8))
+        self.add_widget(self.video)
 
-        # Label for messages
-        self.message_label = Label(size_hint=(1, 0.1))
-        self.main_layout.add_widget(self.message_label)
-
-        # Image widget to display video
-        self.video_display = Image(size_hint=(1, 0.7))
-        self.main_layout.add_widget(self.video_display)
-
-        # Variable to hold MediaPlayer object
-        self.player = None
-
-        return self.main_layout
-
-    def get_stream_url(self, yt_url):
-        ydl_opts = {'format': 'best'}
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+    def get_live_stream_url(self, instance):
+        url = self.url_input.text
+        if url:
             try:
-                info_dict = ydl.extract_info(yt_url, download=False)
-                formats = info_dict.get('formats', None)
-                for f in formats:
-                    if f.get('vcodec') != 'none' and f.get('acodec') != 'none':
-                        return f['url']
+                # Using yt-dlp to get the stream URL
+                ydl_opts = {'quiet': True, 'no_warnings': True, 'format': 'best'}
+                with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                    info = ydl.extract_info(url, download=False)
+                    stream_url = info['url']
+                    
+                if stream_url:
+                    self.video.source = stream_url
+                    self.video.state = 'play'
+                    self.video.options = {'eos': 'loop'}
+                else:
+                    print("Failed to retrieve the live stream URL")
             except Exception as e:
-                self.message_label.text = f"Error: {str(e)}"
-                return None
+                print(f"Error fetching live stream: {e}")
 
-    def start_stream(self, instance):
-        yt_url = self.url_input.text.strip()
-        if not yt_url:
-            self.message_label.text = "Please enter a valid YouTube URL."
-            return
+class YouTubeApp(App):
+    def build(self):
+        return YouTubeLiveStream()
 
-        stream_url = self.get_stream_url(yt_url)
-        if stream_url:
-            self.message_label.text = "Streaming..."
-            self.player = MediaPlayer(stream_url)
-            Clock.schedule_interval(self.update_frame, 1.0 / 30.0)  # 30 FPS
-        else:
-            self.message_label.text = "Failed to retrieve stream URL."
-
-    def update_frame(self, dt):
-        if self.player is not None:
-            frame, val = self.player.get_frame()
-            if val == 'eof':
-                self.message_label.text = "End of stream"
-                Clock.unschedule(self.update_frame)
-                return
-
-            if frame is not None:
-                img, t = frame
-                buf = img.to_bytearray()[0]
-                texture = Texture.create(size=(img.get_size()), colorfmt='rgb')
-                texture.blit_buffer(buf, colorfmt='rgb', bufferfmt='ubyte')
-                self.video_display.texture = texture
-
-    def on_stop(self):
-        if self.player is not None:
-            self.player.close_player()
-
-if __name__ == "__main__":
-    LiveStreamApp().run()
+if __name__ == '__main__':
+    YouTubeApp().run()
