@@ -104,9 +104,9 @@ class Comment(Label):
 		self.halign = 'left'
 		self.valign = 'top'
 		self.bind(pos=self._update, size=self._update)
-		self.bind(texture_size=self.test)
+		self.bind(texture_size=self.update_height)
 	
-	def test(self, *_):
+	def update_height(self, *_):
 		self.height = self.texture_size[1] + dp(20)
 		self._update()
 	

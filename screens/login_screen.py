@@ -14,10 +14,7 @@ from widgets import CircleImage, RoundedTextInput, CustomButton, LoadingPopup, B
 from handle_requests import RequestHandler
 
 
-
-
 class LoginScreen(Screen):
-
 
 	def display_design(self):
 		self.size = self.manager.size
@@ -39,12 +36,8 @@ class LoginScreen(Screen):
 		widget = Widget(size=self.manager.size, pos=(0, 0))
 
 		layout    = BoxLayout(orientation='vertical', padding=Utility.get_value_percentage(self.height, 0.03), spacing=Utility.get_value_percentage(self.height, 0.03), size=self.manager.size)
-
-
 		self.logo = CircleImage(source=self.manager.main_config['icon'], size_hint=(None, None), pos_hint={"center_x": 0.5}, size=(self.width * 0.65, self.width * 0.65))
 		layout.add_widget(self.logo)
-
-
 
 		self.username = RoundedTextInput(hint_text="Username", icon_source='assets/user.png')
 		self.password = RoundedTextInput(hint_text="Password", password=True,
@@ -86,7 +79,6 @@ class LoginScreen(Screen):
 			self.go_to_login()
 
 
-
 	def go_to_home(self):
 		self.manager.transition = FadeTransition(duration=0.1)
 		self.manager.current = 'home'
@@ -97,14 +89,12 @@ class LoginScreen(Screen):
 		self.manager.current = 'register'
 
 
-
 	def show_error_popup(self, message):
 		popup = ThemedPopup(
 			self.manager,
 			title='Login Failed',
 			message=message)
 		popup.open()
-
 
 
 	def login(self):

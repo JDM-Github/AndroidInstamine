@@ -7,14 +7,11 @@ class RequestHandler:
 	url_link = "https://test888.netlify.app"
 	dev_link = "http://localhost:8888"
 
-
 	@staticmethod
 	def get_link():
 		if RequestHandler.development:
 			return RequestHandler.dev_link
 		return RequestHandler.url_link
-
-
 
 	@staticmethod
 	def create_request(link, data={}):

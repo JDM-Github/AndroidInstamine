@@ -11,12 +11,26 @@ from widgets import Utility, CustomImageButton, RoundedTextInput
 
 from kivy.uix.floatlayout import FloatLayout
 from kivy.core.window import Window
-
 from .base_section import BaseSection
 
-class ProductSection(BaseSection):
-	def __init__(self, **kwargs):
+class CustomFloatLayout(FloatLayout):
+
+	def __init__(self, func, **kwargs):
 		super().__init__(**kwargs)
+		self.func = func
+		self.size_hint_y = None
+		self.height = Utility.get_value_percentage(Window.height, 0.3)
+
+	def on_touch_down(self, touch):
+		if self.collide_point(*touch.pos):
+			self.func()
+
+		return super().on_touch_down(touch)
+
+class ProductSection(BaseSection):
+	def __init__(self, manager, **kwargs):
+		super().__init__(**kwargs)
+		self.manager = manager
 		self.display_products()
 
 	def display_products(self):
@@ -32,9 +46,8 @@ class ProductSection(BaseSection):
 		self.add_widget(scroll_view)
 
 	def create_product_widget(self, product_name, product_image, product_price, product_sold):
-		product_widget = FloatLayout(size_hint_y=None, height=Utility.get_value_percentage(Window.height, 0.3))
+		product_widget = CustomFloatLayout(lambda: self.manager.change_product(1))
 		product_widget.bind(pos=self.update_product_bind, size=self.update_product_bind)
-
 
 		box_layout = BoxLayout(pos_hint={"center_x": 0.5, "center_y": 0.5}, orientation='vertical', padding=dp(5), spacing=dp(5))
 		image = Image(source=product_image, size_hint_y=0.7)
@@ -49,7 +62,6 @@ class ProductSection(BaseSection):
 			font_size=sp(12)
 		)
 		title.bind(size=title.setter('text_size'))
-		
 
 		bottom_layout = BoxLayout(orientation='horizontal', size_hint_y=None, height=dp(20), spacing=dp(5))		
 		price = Label(

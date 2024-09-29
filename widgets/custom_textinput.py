@@ -9,21 +9,23 @@ from kivy.graphics import Color, Line
 class RoundedTextInput(Widget):
 
 	def __init__(self,
-		icon_source='',
-		eye_icon_source='',
-		hint_text='',
-		password=False,
-		line_color="#ffffff88",
-		fg_color="#ffffff",
-		hint_color="#ffffff88",
-		size_hint = (0.8, None),
-		height    = dp(40),
-		pos_hint  = {"center_x": 0.5},
+		icon_source     = '',
+		eye_icon_source = '',
+		hint_text       = '',
+		password        = False,
+		line_color      = "#ffffff88",
+		fg_color        = "#ffffff",
+		hint_color      ="#ffffff88",
+		size_hint       = (0.8, None),
+		height          = dp(40),
+		pos_hint        = {"center_x": 0.5},
+		custom_func     = None,
 		**kwargs):
 		super().__init__(**kwargs)
-		self.size_hint = size_hint
-		self.height    = height
-		self.pos_hint  = pos_hint
+		self.custom_func = custom_func
+		self.size_hint   = size_hint
+		self.height      = height
+		self.pos_hint    = pos_hint
 
 		self.input = TextInput(
 			hint_text=hint_text,
@@ -70,7 +72,11 @@ class RoundedTextInput(Widget):
 		if (self.collide_point(*touch.pos)
 			and hasattr(self, 'eye_icon')
 			and self.eye_icon.collide_point(*touch.pos)):
-			if self.eye_icon.source == "assets/close.png":
+
+			if self.custom_func:
+				self.custom_func()
+
+			elif self.eye_icon.source == "assets/close.png":
 				self.eye_icon.source = "assets/show.png"
 				self.input.password = False
 			else:

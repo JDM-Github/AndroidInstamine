@@ -11,7 +11,7 @@ from kivy.utils import get_color_from_hex as GetColor
 from kivy.graphics import Rectangle, RoundedRectangle, Color
 from kivy.uix.screenmanager import SlideTransition
 
-from widgets import RoundedTextInput, CustomButton, LoadingPopup, Utility, ThemedPopup
+from widgets import RoundedTextInput, CustomButton, LoadingPopup, Utility, ThemedPopup, DatePickerPopup
 from handle_requests import RequestHandler
 
 class TermsAgreement(Widget):
@@ -101,12 +101,13 @@ class RegisterScreen(Screen):
 		self.name_layout = BoxLayout       (pos_hint={"center_x": 0.5}, size_hint=(0.8, None), height=dp(60), spacing=dp(10))
 		self.first_name  = RoundedTextInput(hint_text="First Name", size_hint_x=0.5, **common_kwargs)
 		self.last_name   = RoundedTextInput(hint_text="Last Name", size_hint_x=0.5, **common_kwargs)
-		self.birthday    = RoundedTextInput(icon_source='assets/birthday.png', hint_text="MM/DD/YYYY", **common_kwargs)
+		self.birthday    = RoundedTextInput(icon_source='assets/birthday.png', hint_text="MM/DD/YYYY",
+			eye_icon_source='assets/bdaypicker.png', custom_func=lambda: self.open_datepicker(), **common_kwargs)
 		self.email       = RoundedTextInput(icon_source='assets/email.png', hint_text="Email", **common_kwargs)
 		self.password    = RoundedTextInput(icon_source='assets/pass.png', hint_text="Password", eye_icon_source='assets/close.png', password=True, **common_kwargs)
 		self.cpassword   = RoundedTextInput(icon_source='assets/pass.png', hint_text="Confirm Password", eye_icon_source='assets/close.png', password=True, **common_kwargs)
 
-
+		self.birthday.input.readonly = True
 		register_btn = CustomButton(self.manager, text="Sign Up", on_press=self.register)
 		self.name_layout.add_widget(self.first_name)
 		self.name_layout.add_widget(self.last_name)
@@ -142,7 +143,12 @@ class RegisterScreen(Screen):
 			self.go_to_login()
 
 
+	def open_datepicker(self):
+		popup = DatePickerPopup(self.manager, callback=self.set_birthday_text)
+		popup.open()
 
+	def set_birthday_text(self, text):
+		self.birthday.input.text = text
 
 	def register(self):
 		self.loading = LoadingPopup(self.manager)
