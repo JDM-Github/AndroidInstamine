@@ -2,16 +2,12 @@ import threading
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
 from kivy.uix.label import Label
-from kivy.uix.textinput import TextInput
-from kivy.uix.button import Button
-from kivy.uix.popup import Popup
-from kivy.uix.image import Image
 from kivy.uix.widget import Widget
 from kivy.clock import Clock
 
 from kivy.metrics import dp, sp
 from kivy.utils import get_color_from_hex as GetColor
-from kivy.graphics import Rectangle, RoundedRectangle, Color, Line, Ellipse
+from kivy.graphics import Rectangle, RoundedRectangle, Color
 from kivy.uix.screenmanager import SlideTransition, FadeTransition, WipeTransition, SwapTransition
 
 from widgets import CircleImage, RoundedTextInput, CustomButton, LoadingPopup, BackButton, Utility, ThemedPopup

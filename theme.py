@@ -7,9 +7,11 @@ class ThemeHandler:
 		self.main_hover_color = "#7C1E73"
 		self.main_color_88    = "#9C3E9388"
 
-		self.white_bg = "#eaeaea"
+		self.white_bg         = "#eaeaea"
+		self.font_color_88    = "#ffffff88"
 
-		self.font_color_88 = "#ffffff88"
+		self.comment_text_color = "#aaaaaa"
+		self.comment_user_color = "#dddddd"
 
 
 class OriginalColor(ThemeHandler):

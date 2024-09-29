@@ -1,23 +1,17 @@
-import re
-import json
-import requests
 import threading
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
 from kivy.uix.label import Label
-from kivy.uix.textinput import TextInput
-from kivy.uix.button import Button
-from kivy.uix.popup import Popup
 from kivy.uix.widget import Widget
 from kivy.uix.checkbox import CheckBox
 from kivy.clock import Clock
 
 from kivy.metrics import dp, sp
 from kivy.utils import get_color_from_hex as GetColor
-from kivy.graphics import Rectangle, RoundedRectangle, Color, Line, Ellipse
-from kivy.uix.screenmanager import SlideTransition, FadeTransition, WipeTransition, SwapTransition
+from kivy.graphics import Rectangle, RoundedRectangle, Color
+from kivy.uix.screenmanager import SlideTransition
 
-from widgets import RoundedTextInput, CustomButton, LoadingPopup, BackButton, Utility, ThemedPopup
+from widgets import RoundedTextInput, CustomButton, LoadingPopup, Utility, ThemedPopup
 from handle_requests import RequestHandler
 
 class TermsAgreement(Widget):
@@ -30,7 +24,7 @@ class TermsAgreement(Widget):
 		self.height = dp(40)
 		self.pos_hint = {"center_x": 0.5}
 
-		self.layout = BoxLayout(orientation='horizontal')
+		self.layout   = BoxLayout(orientation='horizontal')
 		self.checkbox = CheckBox(size_hint=(None, 1), width=dp(20))
 		terms_policy_label = Label(
 			font_size=sp(14),
@@ -38,6 +32,7 @@ class TermsAgreement(Widget):
 			markup=True,
 			color=GetColor(manager.theme.main_color)
 		)
+
 		self.layout.add_widget(self.checkbox)
 		self.layout.add_widget(terms_policy_label)
 
@@ -101,7 +96,6 @@ class RegisterScreen(Screen):
 			'size_hint_y': None,
 			'height': dp(40)
 		}
-
 		
 		self.username    = RoundedTextInput(icon_source='assets/user.png', hint_text="Username", **common_kwargs)
 		self.name_layout = BoxLayout       (pos_hint={"center_x": 0.5}, size_hint=(0.8, None), height=dp(60), spacing=dp(10))
@@ -116,6 +110,7 @@ class RegisterScreen(Screen):
 		register_btn = CustomButton(self.manager, text="Sign Up", on_press=self.register)
 		self.name_layout.add_widget(self.first_name)
 		self.name_layout.add_widget(self.last_name)
+		self.terms_agreement = TermsAgreement(self.manager)
 
 		layout.add_widget(self.name_layout)
 		layout.add_widget(self.username)
@@ -126,7 +121,7 @@ class RegisterScreen(Screen):
 		layout.add_widget(self.cpassword)
 	
 		layout.add_widget(Widget(size_hint_y=None, height=dp(10)))
-		layout.add_widget(TermsAgreement(self.manager))
+		layout.add_widget(self.terms_agreement)
 		layout.add_widget(register_btn)
 
 		layout.add_widget(Widget(size_hint_y=None, height=dp(10)))
@@ -139,12 +134,8 @@ class RegisterScreen(Screen):
 		ref_login.bind(on_ref_press=self.layout_on_ref_press)
 		layout.add_widget(ref_login)
 
-
-		# ADD ALL WIDGET IN WIDGETS TO LAYOUT
 		widget.add_widget(layout)
 		self.add_widget(widget)
-
-
 
 	def layout_on_ref_press(self, *args):
 		if args[1] == "login":
@@ -174,6 +165,10 @@ class RegisterScreen(Screen):
 			return
 
 		if not Utility.validate_password(self.password, self.cpassword, error_color, success_color, self._on_error, check_strength=True):
+			return
+
+		if not self.terms_agreement.checkbox.active:
+			self._on_error('', "User did not accept user terms and agreement.")
 			return
 
 		threading.Thread(target=self._register).start()

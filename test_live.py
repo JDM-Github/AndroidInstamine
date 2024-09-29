@@ -1,87 +1,45 @@
-# import cv2
-# import yt_dlp
-# from kivy.app import App
-# from kivy.uix.boxlayout import BoxLayout
-# from kivy.uix.label import Label
-# from kivy.uix.textinput import TextInput
-# from kivy.uix.button import Button
-# from kivy.uix.image import Image
-# from kivy.clock import Clock
-# from kivy.graphics.texture import Texture
+import io
+import yt_dlp
+from kivy.app import App
+from kivy.uix.image import Image
+from kivy.clock import Clock
+from kivy.core.image import Image as CoreImage
+import socketio
 
-# class LiveStreamApp(App):
-#     def build(self):
-#         self.main_layout = BoxLayout(orientation='vertical')
+sio = socketio.Client()
 
-#         # Text input for YouTube URL
-#         self.url_input = TextInput(hint_text='Enter YouTube URL', size_hint=(1, 0.1))
-#         self.main_layout.add_widget(self.url_input)
+def get_stream_url(yt_url):
+    ydl_opts = {'format': 'best'}
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        try:
+            info_dict = ydl.extract_info(yt_url, download=False)
+            formats = info_dict.get('formats', None)
+            for f in formats:
+                if f.get('vcodec') != 'none' and f.get('acodec') != 'none':
+                    return f['url']
+        except Exception as e:
+            return None
 
-#         # Submit button
-#         submit_button = Button(text='Submit', size_hint=(1, 0.1))
-#         submit_button.bind(on_press=self.start_stream)
-#         self.main_layout.add_widget(submit_button)
+class StreamingApp(App):
+    def build(self):
+        self.img_widget = Image()
+        return self.img_widget
 
-#         # Label for messages
-#         self.message_label = Label(size_hint=(1, 0.1))
-#         self.main_layout.add_widget(self.message_label)
+    def on_start(self):
+        sio.connect('http://localhost:3000')
+        yt_url = "https://www.youtube.com/live/1Xjn_qRCOtc"
+        stream_url = get_stream_url(yt_url)
+        sio.emit('start_stream', stream_url)
 
-#         # Image widget to display video
-#         self.video_display = Image(size_hint=(1, 0.7))
-#         self.main_layout.add_widget(self.video_display)
+        @sio.on('frame')
+        def on_frame(data):
+            Clock.schedule_once(lambda dt: self.update_image(data))
 
-#         # Variable to hold video capture object
-#         self.capture = None
+    def update_image(self, frame_data):
+        buf = io.BytesIO(frame_data)
+        buf.seek(0)
+        core_image = CoreImage(buf, ext='jpeg')
+        self.img_widget.texture = core_image.texture
 
-#         return self.main_layout
-
-#     def get_stream_url(self, yt_url):
-#         ydl_opts = {'format': 'best'}
-#         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-#             try:
-#                 info_dict = ydl.extract_info(yt_url, download=False)
-#                 formats = info_dict.get('formats', None)
-#                 for f in formats:
-#                     if f.get('vcodec') != 'none' and f.get('acodec') != 'none':
-#                         return f['url']
-#             except Exception as e:
-#                 self.message_label.text = f"Error: {str(e)}"
-#                 return None
-
-#     def start_stream(self, instance):
-#         yt_url = self.url_input.text.strip()
-#         if not yt_url:
-#             self.message_label.text = "Please enter a valid YouTube URL."
-#             return
-
-#         stream_url = self.get_stream_url(yt_url)
-#         if stream_url:
-#             self.message_label.text = "Streaming..."
-#             self.capture = cv2.VideoCapture(stream_url)
-#             if not self.capture.isOpened():
-#                 self.message_label.text = "Failed to open video stream."
-#                 return
-#             Clock.schedule_interval(self.update_frame, 1.0 / 30.0)  # 30 FPS
-#         else:
-#             self.message_label.text = "Failed to retrieve stream URL."
-
-#     def update_frame(self, dt):
-#         if self.capture is not None and self.capture.isOpened():
-#             ret, frame = self.capture.read()
-#             if ret:
-#                 # Convert the frame to Kivy texture
-#                 buf = cv2.flip(frame, 0).tobytes()
-#                 texture = Texture.create(size=(frame.shape[1], frame.shape[0]), colorfmt='bgr')
-#                 texture.blit_buffer(buf, colorfmt='bgr', bufferfmt='ubyte')
-#                 self.video_display.texture = texture
-#             else:
-#                 self.message_label.text = "Failed to retrieve frame."
-#         else:
-#             self.message_label.text = "Capture is not opened."
-
-#     def on_stop(self):
-#         if self.capture is not None:
-#             self.capture.release()
-
-# if __name__ == "__main__":
-#     LiveStreamApp().run()
+if __name__ == '__main__':
+    StreamingApp().run()

@@ -8,13 +8,21 @@ from kivy.metrics import dp
 from kivy.uix.scrollview import ScrollView
 from kivy.utils import get_color_from_hex as GetColor
 
+class DataPicker(BoxLayout):
+	
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+		white_color   = GetColor("#FFFFFF")
+		pinkish_color = GetColor(manager.theme.main_color)
+		text_color    = GetColor("#333333")
+
 class ThemedPopup(Popup):
 	def __init__(self, manager, title="Popup", message="", **kwargs):
 		super().__init__(**kwargs)
 
-		white_color   = GetColor("#FFFFFF")
+		white_color  = GetColor("#FFFFFF")
 		pinkish_color = GetColor(manager.theme.main_color)
-		text_color    = GetColor("#333333")
+		text_color  = GetColor("#333333")
 
 		layout = BoxLayout(orientation='vertical', padding=dp(20), spacing=dp(20))
 
