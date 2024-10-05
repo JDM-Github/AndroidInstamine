@@ -10,9 +10,11 @@ from kivy.metrics import dp, sp
 from .base_section import BaseSection
 
 from kivy.clock import Clock
+from kivy.effects.scroll import ScrollEffect
 from kivy.graphics import Color, RoundedRectangle
 from kivy.utils import get_color_from_hex as GetColor
 from widgets import RoundedTextInput, CustomButton, CustomImageButton
+
 
 class LiveSection(BaseSection):
 	def __init__(self, manager, **kwargs):
@@ -47,7 +49,7 @@ class LiveSection(BaseSection):
 		self.bind(size=lambda *args: self.label_instance.setter('text_size')(self.label_instance, (self.width, None)))
 		self.comment_section_layout.add_widget(Widget(size_hint=(1, 0.05)))
 
-		self.scrollview = ScrollView(size_hint=(1, 0.8))
+		self.scrollview = ScrollView(size_hint=(1, 0.8), effect_cls=ScrollEffect)
 		self.comments_layout = BoxLayout(orientation='vertical', size_hint_y=None, spacing=dp(5))
 		self.comments_layout.bind(minimum_height=self.comments_layout.setter('height'))
 		self.scrollview.add_widget(self.comments_layout)
@@ -88,7 +90,8 @@ class LiveSection(BaseSection):
 			if is_me:
 				self.comment_input.input.text = ''
 
-			self.scrollview.scroll_to(new_comment)
+			if len(self.comments_layout.children) > 6:
+				self.scrollview.scroll_to(new_comment)
 
 
 class Comment(Label):

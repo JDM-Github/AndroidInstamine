@@ -17,7 +17,6 @@ class ThemedPopup(Popup):
 		text_color    = GetColor("#333333")
 
 		layout = BoxLayout(orientation='vertical', padding=dp(20), spacing=dp(20))
-
 		scroll_view = ScrollView(size_hint=(1, None), height=dp(120))
 		self.error_message = Label(
 			text_size=(self.width, None),

@@ -9,7 +9,7 @@ from kivy.uix.image import Image
 
 class CustomButton(Widget):
 
-	def __init__(self, root, text='', on_press=lambda: None, size_hint=(0.8, None), radius=[dp(20)], **kwargs):
+	def __init__(self, root, text='', on_press=lambda: None, size_hint=(0.8, None), pos_hint={"center_x": 0.5}, radius=[dp(20)], **kwargs):
 		super().__init__(**kwargs)
 		self.root = root
 		self.on_press = on_press
@@ -17,7 +17,7 @@ class CustomButton(Widget):
 
 		self.size_hint = size_hint
 		self.height    = dp(45)
-		self.pos_hint  = {"center_x": 0.5}
+		self.pos_hint  = pos_hint
 
 		self.label = Label(text=text, bold=True)
 		self.add_widget(self.label)

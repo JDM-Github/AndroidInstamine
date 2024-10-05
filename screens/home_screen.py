@@ -53,8 +53,6 @@ class HomeScreen(Screen):
 		self.display_widget()
 
 
-
-
 	def display_widget(self):
 		self.clear_widgets()
 		spacepadd = Utility.get_value_percentage(self.height, 0.015)
@@ -132,7 +130,7 @@ class HomeScreen(Screen):
 		elif section == 'mall':
 			sect = self.all_middle_section.get('mall', None)
 			if sect is None:
-				sect = MallSection()
+				sect = MallSection(self.manager)
 				self.all_middle_section['mall'] = sect
 
 			self.reset_next = False

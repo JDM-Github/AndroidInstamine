@@ -66,7 +66,7 @@ class Manager(ScreenManager):
 		self.product .display_design()
 
 	def change_product(self, product_id):
-		self.transition = FadeTransition(duration=0.5)
+		self.transition = FadeTransition(duration=0.2)
 		self.product.update_product(product_id)
 		self.current = "product"
 
@@ -87,10 +87,10 @@ class Manager(ScreenManager):
 
 
 
-class MyApp(App):
+class InstaminApp(App):
 
 	def build(self):
 		return Manager()
 
 if __name__ == '__main__':
-	MyApp().run()
+	InstaminApp().run()
