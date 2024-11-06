@@ -1,22 +1,20 @@
-from kivy.uix.label import Label
-from kivy.metrics import sp
+from kivy.app import App
 from .base_section import BaseSection
+from kivy.uix.boxlayout import BoxLayout
+from kivy.properties import BooleanProperty, StringProperty
 
-class TopNotification(Label):
+from widgets import ThemedPopup
 
-	def __init__(self, **kwargs):
-		super().__init__(**kwargs)
-		self.text        = "Notification"
-		self.size_hint_x = 0.9
-		self.font_size   = sp(16)
-		self.halign      = 'left'
-		self.valign      = 'top'
-		self.bold        = True
-		self.bind(pos=self._update, size=self._update)
 
-	def _update(self, *_):
-		self.text_size = (self.width*0.9, None)
+class NotificationWidget(BoxLayout):
+	unread = BooleanProperty(True)
+	title = StringProperty("Notification")
+	message = StringProperty("Notification test message")
+	date = StringProperty("2022-05-10")
 
+	def open_notification(self):
+		popup = ThemedPopup(App.get_running_app().sm, self.title, self.message)
+		popup.open()
+	
 class NotificationSection(BaseSection):
-	def __init__(self, **kwargs):
-		super().__init__(**kwargs)
+	pass

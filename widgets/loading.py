@@ -1,12 +1,8 @@
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.label import Label
-from kivy.uix.button import Button
-from kivy.uix.popup import Popup
 from kivy.uix.widget import Widget
 from kivy.clock import Clock
 
-from kivy.utils import get_color_from_hex as GetColor, get_random_color
-from kivy.graphics import Rectangle, RoundedRectangle, Color, Line, Ellipse, Rotate, PushMatrix, PopMatrix
+from kivy.utils import get_random_color
+from kivy.graphics import Rectangle, Color, Ellipse, Rotate, PushMatrix, PopMatrix
 
 
 class LoadingPopup(Widget):

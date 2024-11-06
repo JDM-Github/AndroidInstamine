@@ -1,0 +1,134 @@
+
+
+# <AddProduct>:
+#     title: ""
+#     separator_height: 0
+#     size_hint: 0.8, 0.75
+#     auto_dismiss: False
+
+#     background_color: 1, 1, 1, 1
+#     background: ""
+
+#     canvas.before:
+#         Color:
+#             rgba: 0.9, 0.8,1, 1
+#         RoundedRectangle:
+#             size: self.size
+#             pos: self.pos
+
+#     BoxLayout:
+#         orientation: 'vertical'
+#         padding: dp(10)
+#         spacing: dp(5)
+#         size_hint_x: 1
+
+#         Label:
+#             text: "Add Product"
+#             color: 0.3, 0.3, 0.3, 1
+#             text_size: self.width, None
+#             halign: 'center'
+#             valign: 'center'
+#             font_size: sp(16)
+#             bold: True
+#         SpaceWidget:
+#             height: Window.height * 0.01
+        
+#         BoxLayout:
+#             size_hint_y: None
+#             height: Window.height * 0.09
+#             orientation: "vertical"
+#             Label:
+#                 text: "Main Image:"
+#                 color: 0.3, 0.3, 0.3, 1
+#                 text_size: self.width, None
+#                 halign: 'left'
+#                 valign: 'center'
+            
+#             CustomButtonWidget:
+#                 text: "Choose Main Image"
+#                 on_release: root.choose_main_image()
+
+#         BoxLayout:
+#             size_hint_y: None
+#             height: Window.height * 0.12
+#             orientation: "vertical"
+#             Label:
+#                 text: "Additional Images:"
+#                 color: 0.3, 0.3, 0.3, 1
+#                 text_size: self.width, None
+#                 halign: 'left'
+#                 valign: 'center'
+
+#             CustomButtonWidget:
+#                 text: "Choose Images"
+#                 on_release: root.choose_images()
+        
+#         BoxLayout:
+#             size_hint_y: None
+#             height: Window.height * 0.09
+#             orientation: "vertical"
+#             Label:
+#                 text: "Product Name:"
+#                 color: 0.3, 0.3, 0.3, 1
+#                 text_size: self.width, None
+#                 halign: 'left'
+#                 valign: 'center'
+
+#             CustomTextInput:
+#                 multiline: False
+        
+#         BoxLayout:
+#             size_hint_y: None
+#             height: Window.height * 0.09
+#             orientation: "vertical"
+#             Label:
+#                 text: "Product Price:"
+#                 color: 0.3, 0.3, 0.3, 1
+#                 text_size: self.width, None
+#                 halign: 'left'
+#                 valign: 'center'
+
+#             CustomTextInput:
+#                 multiline: False
+        
+#         BoxLayout:
+#             size_hint_y: None
+#             height: Window.height * 0.09
+#             orientation: "vertical"
+#             Label:
+#                 text: "Product Stock:"
+#                 color: 0.3, 0.3, 0.3, 1
+#                 text_size: self.width, None
+#                 halign: 'left'
+#                 valign: 'center'
+
+#             CustomTextInput:
+#                 multiline: False
+        
+#         BoxLayout:
+#             size_hint_y: None
+#             height: self.minimum_height
+#             orientation: "vertical"
+#             Label:
+#                 text: "Product Specification:"
+#                 size_hint_y: None
+#                 height: Window.height * 0.045
+#                 color: 0.3, 0.3, 0.3, 1
+#                 text_size: self.width, None
+#                 halign: 'left'
+#                 valign: 'center'
+
+#             CustomTextInput:
+#                 size_hint_y: None
+#                 height: Window.height * 0.1
+#                 multiline: True
+        
+#         BoxLayout:
+#             size_hint_y: None
+#             height: Window.height * 0.04
+#             spacing: dp(5)
+
+#             CustomButtonWidget:
+#                 text: "Cancel"
+#                 default_color: "#ff3344"
+#                 on_release: root.dismiss()

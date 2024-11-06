@@ -14,10 +14,12 @@ def get_stream_url(yt_url):
         try:
             info_dict = ydl.extract_info(yt_url, download=False)
             formats = info_dict.get('formats', None)
+
             for f in formats:
                 if f.get('vcodec') != 'none' and f.get('acodec') != 'none':
                     return f['url']
         except Exception as e:
+            print(e)
             return None
 
 class StreamingApp(App):

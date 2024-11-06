@@ -1,0 +1,178 @@
+
+
+<EditProfile>:
+    title: ""
+    separator_height: 0
+    size_hint: 1, 1
+    auto_dismiss: False
+
+    background_color: 1, 1, 1, 1
+    background: ""
+
+    canvas.before:
+        Color:
+            rgba: 0.9, 0.8,1, 1
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+
+    ScrollView:
+        BoxLayout:
+            orientation: 'vertical'
+            padding: dp(10)
+            spacing: dp(5)
+            height: self.minimum_height
+            size_hint_y: None
+
+            Label:
+                text: "Edit Profile"
+                color: 0.3, 0.3, 0.3, 1
+                text_size: self.width, None
+                halign: 'center'
+                valign: 'center'
+                font_size: sp(16)
+                bold: True
+
+            SpaceWidget:
+                height: Window.height * 0.01
+
+            BoxLayout:
+                size_hint_y: None
+                height: self.minimum_height
+                orientation: "vertical"
+
+                Widget:
+                    size_hint_x: None
+                    size_hint_y: None
+                    width: dp(100)
+                    height: dp(100)
+                    pos_hint: {'center_x': 0.5}
+
+                    canvas.before:
+                        Color:
+                            rgba: (0.8, 0.8, 0.8, 1) if root.main_image_path == "" else (1, 1, 1, 1)
+                        RoundedRectangle:
+                            size: self.size
+                            pos: self.pos
+                            source: root.main_image_path
+                
+                SpaceWidget:
+                    height: Window.height * 0.01
+
+                CustomButtonWidget:
+                    size_hint_y: None
+                    height: Window.height * 0.045
+                    text: "Choose Profile Image"
+                    on_release: root.choose_main_image()
+
+            BoxLayout:
+                size_hint_y: None
+                height: Window.height * 0.09
+                orientation: "vertical"
+                Label:
+                    text: "First Name:"
+                    color: 0.3, 0.3, 0.3, 1
+                    text_size: self.width, None
+                    halign: 'left'
+                    valign: 'center'
+
+                CustomTextInput:
+                    multiline: False
+                    text: app.sm.main_state['user']['firstName']
+                    on_text: root.firstName = self.text
+
+            BoxLayout:
+                size_hint_y: None
+                height: Window.height * 0.09
+                orientation: "vertical"
+                Label:
+                    text: "Last Name:"
+                    color: 0.3, 0.3, 0.3, 1
+                    text_size: self.width, None
+                    halign: 'left'
+                    valign: 'center'
+
+                CustomTextInput:
+                    multiline: False
+                    text: app.sm.main_state['user']['lastName']
+                    on_text: root.lastName = self.text
+
+            BoxLayout:
+                size_hint_y: None
+                height: Window.height * 0.09
+                orientation: "vertical"
+                Label:
+                    text: "Username:"
+                    color: 0.3, 0.3, 0.3, 1
+                    text_size: self.width, None
+                    halign: 'left'
+                    valign: 'center'
+
+                CustomTextInput:
+                    multiline: False
+                    text: app.sm.main_state['user']['username']
+                    on_text: root.username = self.text
+            
+            BoxLayout:
+                size_hint_y: None
+                height: Window.height * 0.09
+                orientation: "vertical"
+                Label:
+                    text: "Phone Number:"
+                    color: 0.3, 0.3, 0.3, 1
+                    text_size: self.width, None
+                    halign: 'left'
+                    valign: 'center'
+
+                CustomTextInput:
+                    multiline: False
+                    text: app.sm.main_state['user']['phoneNumber']
+                    on_text: root.phoneNumber = self.text
+            
+            BoxLayout:
+                size_hint_y: None
+                height: Window.height * 0.09
+                orientation: "vertical"
+                Label:
+                    text: "Location:"
+                    color: 0.3, 0.3, 0.3, 1
+                    text_size: self.width, None
+                    halign: 'left'
+                    valign: 'center'
+
+                CustomTextInput:
+                    multiline: False
+                    text: app.sm.main_state['user']['location']
+                    on_text: root.location = self.text
+
+            BoxLayout:
+                size_hint_y: None
+                height: self.minimum_height
+                orientation: "vertical"
+                Label:
+                    text: "Birthday:"
+                    size_hint_y: None
+                    height: Window.height * 0.045
+                    color: 0.3, 0.3, 0.3, 1
+                    text_size: self.width, None
+                    halign: 'left'
+                    valign: 'center'
+
+                CustomTextInput:
+                    size_hint_y: None
+                    height: Window.height * 0.045
+                    text: app.sm.main_state['user']['birthdate']
+                    on_text: root.bday = self.text
+
+            BoxLayout:
+                size_hint_y: None
+                height: Window.height * 0.04
+                spacing: dp(5)
+                CustomButtonWidget:
+                    text: "Create"
+                    on_release: root.submit_product()
+
+                CustomButtonWidget:
+                    text: "Cancel"
+                    default_color: "#ff3344"
+                    on_release: root.dismiss()

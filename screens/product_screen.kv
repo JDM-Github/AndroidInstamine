@@ -1,0 +1,284 @@
+
+<CustomImage>:
+    color: "#aaaaaa"
+    size_hint_x: None
+    width: dp(40)
+    canvas.after:
+        Color:
+            rgb: GetColor(self.border_color) 
+        Line:
+            rectangle: self.x, self.y, self.width, self.height
+            width: 1
+
+<PriceName>:
+    orientation: 'vertical'
+    height: dp(60)
+    size_hint_y: None
+    padding: [dp(20), dp(10)]
+    radius: [dp(0)]
+
+    Label:
+        text: "₱" + root.price_text
+        color: app.sm.theme.main_color
+        bold: True
+        font_size: sp(16)
+        halign: 'left'
+        size_hint_y: None
+        height: self.texture_size[1]
+        text_size: self.width, None
+
+    Label:
+        text: root.title_text
+        color: "#555555"
+        font_size: sp(16)
+        halign: 'left'
+        bold: True
+        size_hint_y: None
+        height: self.texture_size[1]
+        text_size: self.width, None
+
+<RevenueSold>:
+    orientation: 'vertical'
+    height: dp(60)
+    size_hint_y: None
+    padding: [dp(20), dp(10)]
+    radius: [dp(0)]
+
+    Label:
+        text: "Revenue: ₱" + root.revenue_text
+        color: "#555555"
+        bold: True
+        font_size: sp(16)
+        halign: 'left'
+        size_hint_y: None
+        height: self.texture_size[1]
+        text_size: self.width, None
+
+    Label:
+        text: "Number of Sold: " + root.number_sold
+        color: "#555555"
+        font_size: sp(16)
+        halign: 'left'
+        bold: True
+        size_hint_y: None
+        height: self.texture_size[1]
+        text_size: self.width, None
+
+<ShopWidget>:
+    orientation: 'vertical'
+    height: dp(80)
+    size_hint_y: None
+    padding: [dp(20), dp(5), dp(20), dp(5)]
+    radius: [dp(0)]
+    spacing: dp(10)
+
+    BoxLayout:
+        orientation: 'horizontal'
+
+        Widget:
+            size_hint: (None, None)
+            size: (dp(50), dp(50))
+            pos_hint: {'center_y': 0.5}
+
+            canvas.before:
+                Color:
+                    rgba: 0.9, 0.9, 0.9, 1
+                Ellipse:
+                    pos: self.pos
+                    size: self.size
+                    source: root.seller_profile
+
+        StackLayout:
+            orientation: 'lr-tb'
+            padding: [dp(10)]
+            spacing: dp(5)
+
+            Label:
+                text: root.seller_text
+                font_size: sp(16)
+                color: "#444444"
+                size_hint_y: None
+                height: dp(14)
+                halign: 'left'
+                text_size: self.width, None 
+
+            Label:
+                text: root.is_active
+                font_size: sp(12)
+                color: "#555555"
+                size_hint_y: None
+                height: dp(13)
+                halign: 'left'
+                text_size: self.width, None 
+
+            Label:
+                text: root.location_text
+                font_size: sp(12)
+                color: "#777777"
+                size_hint_y: None
+                height: dp(13)
+                halign: 'left'
+                text_size: self.width, None 
+
+        CustomButtonWidget:
+            text: "View Shop"
+            size_hint: (None, None)
+            size: (dp(100), dp(40))
+            pos_hint: {'center_y': 0.5}
+            on_press: root.parent.parent.parent.parent.parent.sellerProductSection()
+
+<SellerInformationResponse>:
+    orientation: "horizontal"
+    height: dp(20)
+    size_hint_y: None
+    padding: [dp(20), dp(5), dp(20), dp(5)]
+    radius: [dp(0)]
+    spacing: dp(10)
+
+    Label:
+        text: root.numberProduct + " [ref=product][color=#9C3E93]Products[/color][/ref]"
+        font_size: sp(14)
+        color: "#555555"
+        size_hint: (None, 1)
+        width: dp(100)
+        halign: 'left'
+        markup: True
+        text_size: self.width, None
+		on_ref_press: root.checkProducts()
+
+    Label:
+        text: root.userRating + " [color=#9C3E93]Ratings[/color]"
+        font_size: sp(14)
+        color: "#555555"
+        size_hint: (None, 1)
+        width: dp(100)
+        halign: 'left'
+        markup: True
+        text_size: self.width, None
+
+    Label:
+        text: root.chatResponse + " [color=#9C3E93]Chat Response[/color]"
+        font_size: sp(14)
+        color: "#555555"
+        size_hint: (None, 1)
+        width: dp(150)
+        halign: 'left'
+        markup: True
+        text_size: self.width, None
+
+
+<Specification>:
+    orientation: "vertical"
+    size_hint_y: None
+    padding: [dp(10)]
+    radius: [dp(0)]
+    spacing: dp(10)
+    height: self.minimum_height
+
+    Label:
+        text: "Specification"
+        font_size: sp(16)
+        size_hint_y: None
+        height: dp(20)
+        color: "#555555"
+        halign: 'left'
+        bold: True
+        text_size: self.width, None
+
+    ScrollView:
+        effect_cls: ScrollEffect
+        size_hint_y: None
+        height: dp(100)
+        do_scroll_x: False
+        do_scroll_y: True
+
+        Label:
+            text: root.specification
+            font_size: sp(14)
+            color: "#555555"
+            size_hint_y: None
+            halign: 'left'
+            valign: 'top'
+            text_size: self.width, None
+            height: self.texture_size[1]
+
+
+
+<ReviewImage>:
+    size_hint: (0.33, None)
+    height: dp(70)
+    canvas.before:
+        Color:
+            rgba: 0, 0, 0, 0.3
+        RoundedRectangle:
+            pos: self.x - dp(1), self.y - dp(1)
+            size: self.width + dp(2), self.height + dp(2)
+
+<ReviewProduct>:
+    orientation: 'vertical'
+    size_hint_y: None
+    spacing: dp(5)
+    padding: [dp(20), dp(10)]
+    height: self.minimum_height
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: None
+        height: dp(20)
+        spacing: dp(5)
+
+        Image:
+            color: '#555555'
+            size_hint: (0.1, 1)
+
+        Label:
+            text: root.email
+            font_size: sp(14)
+            color: '#555555'
+            halign: 'left'
+            text_size: self.width, None
+
+        # CustomButtonWidget:
+        #     text: 'Helpful'
+        #     size_hint: None, None
+        #     width: dp(80)
+        #     height: dp(20)
+
+    StarRating:
+        rating: root.rating
+    
+    Widget:
+        size_hint_y: None
+        height: dp(5)
+
+    Label:
+        text: 'Best Feature: ' + root.best_feature
+        font_size: sp(14)
+        color: '#777777'
+        size_hint_y: None
+        height: dp(15)
+        halign: 'left'
+        text_size: self.width, None
+
+    Label:
+        text: 'Product Quality: ' + root.product_quality
+        font_size: sp(14)
+        color: '#777777'
+        size_hint_y: None
+        height: dp(15)
+        halign: 'left'
+        text_size: self.width, None
+    
+    Widget:
+        size_hint_y: None
+        height: dp(5)
+
+    Label:
+        text: root.review_text
+        font_size: sp(14)
+        color: '#555555'
+        size_hint_y: None
+        height: dp(20)
+        halign: 'left'
+        text_size: self.width, None
+        height: self.texture_size[1]

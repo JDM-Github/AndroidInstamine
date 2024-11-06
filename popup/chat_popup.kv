@@ -1,0 +1,106 @@
+
+<MyChat>:
+    size_hint: (None, None)
+    width: Window.width * 0.5
+    text_size: self.width, None 
+    height: self.texture_size[1]
+    pos_hint: {'right': 1}
+
+    halign: 'left'
+    valign: 'top'
+    padding: [dp(10)]
+
+    canvas.before:
+        Color:
+            rgba: root.main_color
+        RoundedRectangle:
+            size: self.width, self.height
+            pos: self.x, self.y
+
+<PartnerChat>:
+    main_color: (1, 0.3, 0.8, 0.8)
+    pos_hint: {'left': 1}
+
+<ChatPopup>:
+    title: ""
+    separator_height: 0
+    size_hint: 0.9, 0.56
+    auto_dismiss: True
+
+    background_color: 1, 1, 1, 1
+    background: ""
+
+    canvas.before:
+        Color:
+            rgba: 0.9, 0.8,1, 1
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(10)
+        spacing: dp(5)
+        height: self.minimum_height
+        size_hint_y: None
+        Label:
+            text: "Chat with " + root.chat_partner
+            color: 0.3, 0.3, 0.3, 1
+            text_size: self.width, None
+            halign: 'center'
+            valign: 'center'
+            font_size: sp(16)
+            bold: True
+
+        SpaceWidget:
+            height: Window.height * 0.01
+
+        ScrollView:
+            id: y_scroll
+            size_hint_y: None
+            height: Window.height * 0.4
+
+            canvas.before:
+                Color:
+                    rgba: 0.9, 0.9, 0.9, 1
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+
+            BoxLayout:
+                id: chats
+                size_hint_y: None
+                height: self.minimum_height
+                orientation: "vertical"
+                padding: dp(5)
+                spacing: dp(5)
+
+        SpaceWidget:
+            height: Window.height * 0.01
+            
+        BoxLayout:
+            size_hint_y: None
+            height: Window.height * 0.04
+            spacing: dp(10)
+
+            CustomTextInput:
+                id: text_message
+                size_hint_x: 0.8
+                radius: dp(5)
+            CustomButtonWidget:
+                size_hint_x: 0.2
+                text: "Send"
+                on_release: root.send_message()
+
+            # BoxLayout:
+            #     size_hint_y: None
+            #     height: Window.height * 0.04
+            #     spacing: dp(5)
+            #     CustomButtonWidget:
+            #         text: "Create"
+            #         on_release: root.submit_product()
+
+            #     CustomButtonWidget:
+            #         text: "Cancel"
+            #         default_color: "#ff3344"
+            #         on_release: root.dismiss()

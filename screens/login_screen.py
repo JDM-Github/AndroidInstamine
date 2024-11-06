@@ -8,7 +8,6 @@ from kivy.clock import Clock
 from kivy.metrics import dp, sp
 from kivy.utils import get_color_from_hex as GetColor
 from kivy.graphics import Rectangle, RoundedRectangle, Color
-from kivy.uix.screenmanager import SlideTransition, FadeTransition, WipeTransition, SwapTransition
 
 from widgets import CircleImage, RoundedTextInput, CustomButton, LoadingPopup, BackButton, Utility, ThemedPopup
 from handle_requests import RequestHandler
@@ -39,11 +38,10 @@ class LoginScreen(Screen):
 		self.logo = CircleImage(source=self.manager.main_config['icon'], size_hint=(None, None), pos_hint={"center_x": 0.5}, size=(self.width * 0.65, self.width * 0.65))
 		layout.add_widget(self.logo)
 
-		self.username = RoundedTextInput(hint_text="Username", icon_source='assets/user.png')
+		self.email = RoundedTextInput(hint_text="Email", icon_source='assets/email.png')
 		self.password = RoundedTextInput(hint_text="Password", password=True,
 			icon_source='assets/pass.png',
 			eye_icon_source='assets/close.png')
-
 
 		login_btn    = CustomButton(self.manager, text="Login", on_press=self.login)
 		register_btn = CustomButton(self.manager, text="Create an account", on_press=self.go_to_register)
@@ -51,7 +49,7 @@ class LoginScreen(Screen):
 		layout.add_widget(Label(text="Japan", font_size=sp(56), bold=True, size_hint_y=None, height=dp(20)))
 		layout.add_widget(Widget(size_hint_y=None, height=dp(10)))
 
-		layout.add_widget(self.username)
+		layout.add_widget(self.email)
 		layout.add_widget(self.password)
 
 		forgot_password_label = Label(
@@ -78,16 +76,13 @@ class LoginScreen(Screen):
 		if args[1] == "forgot_password":
 			self.go_to_login()
 
-
 	def go_to_home(self):
-		self.manager.transition = FadeTransition(duration=0.1)
+		self.manager.home.all_middle_section = {}
 		self.manager.current = 'home'
-
+		self.manager.home.update_button_active('home')
 
 	def go_to_register(self):
-		self.manager.transition = SlideTransition(direction='left', duration=0.5)
 		self.manager.current = 'register'
-
 
 	def show_error_popup(self, message):
 		popup = ThemedPopup(
@@ -102,46 +97,45 @@ class LoginScreen(Screen):
 		self.add_widget(self.loading)
 		threading.Thread(target=self._login).start()
 
-		# self.go_to_home()
-
 	def _login(self):
-
-		# result, message = RequestHandler.create_request(
-		# 	link="login",
-		# 	data={
-		# 		'username': self.username.input.text,
-		# 		'password': self.password.input.text
-		# 	}
-		# )
-		result = True
-		message = {'success': "SUCCESSFULLY LOGIN!"}
+		result, response = RequestHandler.create_request(
+			method="get",
+			link="user/login",
+			data={
+				'email'   : self.email.input.text,
+				'password': self.password.input.text
+			}
+		)
 		if result:
-			self.on_success(message)
+			self.on_success(response)
 		else:
-			self.on_error(message)
+			self.on_error(response)
 
 
 	def on_success(self, result):
 		Clock.schedule_once(lambda dt: self._on_success(result))
 
-
 	def on_error(self, error):
 		Clock.schedule_once(lambda dt: self._on_error(error))
-
 
 	def _on_success(self, result):
 		self.remove_widget(self.loading)
 		if result and result.get('success', None):
-			self.manager.main_state['already_login'] = True;
-			self.manager.save_json_config("state.json", self.manager.main_state)
-			self.go_to_home()
+			self.manager.main_state['already_login'] = True
+			self.manager.main_state['user'] = result.get('user', {})
+			# self.manager.save_json_config("state.json", self.manager.main_state)
+			popup = ThemedPopup(
+				self.manager,
+				title='Login Success',
+				message=result.get('message'))
+			popup.open()
+
+			self.go_to_home()			
 		else:
 			self.show_error_popup(result.get('message', 'Login failed.'))
 
-
-	def _on_error(self, error, error_message="Error occurred while processing the request."):
+	def _on_error(self, error):
 		self.remove_widget(self.loading)
-		print(f"Error: {error}")
-		self.show_error_popup(error_message)
+		self.show_error_popup(error.get('message'))
 
 

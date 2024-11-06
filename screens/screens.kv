@@ -1,0 +1,15 @@
+#:import Utility widgets.Utility
+#:import GetColor kivy.utils.get_color_from_hex
+
+<VerifyScreen>:
+    canvas.before:
+		Color:
+            rgba: GetColor("#ffffff")
+		Rectangle:
+            size: self.size
+		Color:
+            rgba: GetColor("#9C3E93")
+		RoundedRectangle:
+			size: (self.width, Utility.get_value_percentage(self.height, 0.38))
+			pos: (0, Window.height - Utility.get_value_percentage(self.height, 0.38))
+			radius: [0, 0, dp(30), dp(30)]

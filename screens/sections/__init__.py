@@ -1,5 +1,16 @@
 from .product_section import ProductSection
 from .mall_section import MallSection
 from .live_section import LiveSection
-from .notif_section import NotificationSection, TopNotification
+from .notif_section import NotificationSection
 from .profile_section import ProfileSection
+from .chat_section import ChatSection
+from .cart_section import CartSection
+from .my_likes import MyLikes
+from .recently_viewed import RecentlyViewed
+from .checkUserProduct import CheckUserProducts
+from .my_products import MyProducts
+from .to_pay import ToPay
+from .to_ship import ToShip
+from .to_receive import ToReceive
+from .is_complete import IsComplete
+from .who_orders import WhoOrder

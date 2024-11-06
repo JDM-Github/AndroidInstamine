@@ -1,0 +1,195 @@
+<PlaceOrderLiveBottom>:
+    orientation: "horizontal"
+    width: Window.width
+    height: dp(40)
+    padding: dp(5)
+    spacing: dp(5)
+
+    CustomButtonWidget:
+        text: "ADD PRODUCT"
+        color: (1, 1, 1, 1)
+        bold: True
+
+    CustomButtonWidget:
+        text: "END STREAM"
+        color: (1, 1, 1, 1)
+        bold: True
+        on_release: root.parent.parent.end_stream()
+
+<LiveScreenBody>:
+    size_hint_y: None
+    height: self.minimum_height
+
+
+    SpaceWidget:
+        height: dp(5)
+    
+	Image:
+        id: screen
+        size_hint: (1, None)
+        height: Window.height * 0.3
+        pos_hint: {"center_x": 0.5}
+		fit_mode: "fill"
+        color: 0.9, 0.9, 0.9, 1
+    
+
+    # CustomBoxLayout:
+    #     orientation: 'vertical'
+    #     size_hint_x: 0.98
+    #     size_hint_y: None
+    #     height: dp(60)
+    #     pos_hint: {'center_x': 0.5}
+    #     padding: dp(5)
+
+    #     LeftLabel:
+    #         text: root.full_name + " (" + root.phone_num + ")"
+    #         font_size: '16sp'
+    #         halign: 'left'
+    #         color: 0.5, 0.5, 0.5, 1
+    #         bold: True
+        
+    #     LeftLabel:
+    #         text: "EWAN LOCATION"
+    #         font_size: '14sp'
+    #         halign: 'left'
+    #         color: 0.5, 0.5, 0.5, 1
+
+    # GridLayout:
+    #     id: product_grid
+    #     cols: 1
+    #     spacing: dp(2)
+    #     size_hint_y: None
+    #     height: self.minimum_height
+        
+    #     ProductItem:
+    #         id: product_item
+    #         seller_name: "Seller Store"
+    #         product_image: root.product_img
+    #         product_name: root.product_name
+    #         product_price: root.product_price
+    #         product_quantity: "1"
+
+    # # Message for seller
+    # CustomBoxLayout:
+    #     orientation: 'horizontal'
+    #     size_hint_x: 0.98
+    #     size_hint_y: None
+    #     height: dp(50)
+    #     pos_hint: {'center_x': 0.5}
+
+    #     canvas.before:
+    #         Color:
+    #             rgba: 0.5, 0.5, 0.5, 1
+    #         Line:
+    #             rounded_rectangle: self.x, self.y, self.width, self.height, 10 
+    #             width: 1.5 
+    #         Color:
+    #             rgba: 1, 1, 1, 1
+    #         RoundedRectangle:
+    #             pos: self.pos
+    #             size: self.size
+    #             radius: [10] 
+
+    #     TextInput:
+    #         hint_text: "Message for the seller"
+    #         multiline: False
+    #         background_color: 1, 1, 1, 0
+    #         foreground_color: 0, 0, 0, 1 
+    #         padding: [10, 10]
+    #         size_hint_x: 1
+
+    # # Total items summary
+    # CustomBoxLayout:
+    #     orientation: 'horizontal'
+    #     size_hint_y: None
+    #     height: dp(50)
+    #     padding: dp(10)
+    #     LeftLabel:
+    #         text: "Total " + str(root.number_items) + " Item(s)"
+    #         font_size: '16sp'
+    #         halign: 'left'
+    #         color: 0.5, 0.5, 0.5, 1
+    #     LeftLabel:
+    #         halign: "right"
+    #         text: "₱"+str(root.total_price)
+    #         font_size: '16sp'
+    #         halign: 'right'
+    #         bold: True
+    #         color: 0.5, 0.5, 0.5, 1
+
+    # CustomBoxLayout:
+    #     orientation: 'vertical'
+    #     size_hint_y: None
+    #     height: dp(30)
+    #     Spinner:
+    #         text: "Select Payment Method"
+    #         values: ["Cash on Delivery"]
+
+    # CustomBoxLayout:
+    #     orientation: 'vertical'
+    #     size_hint_y: None
+    #     height: self.minimum_height
+    #     padding: dp(10)
+
+    #     LeftLabel:
+    #         size_hint_y: None
+    #         height: dp(15)
+    #         text: "Payment Details"
+    #         font_size: '16sp'
+    #         halign: 'left'
+    #         color: 0.4, 0.4, 0.4, 1
+    #     SpaceWidget:
+    #         height: dp(5)
+        
+    #     BoxLayout:
+    #         orientation: 'horizontal'
+    #         size_hint_y: None
+    #         height: dp(25)
+    #         LeftLabel:
+    #             color: 0.5, 0.5, 0.5, 1
+    #             text: "Merchandise Subtotal"
+    #         LeftLabel:
+    #             color: 0.5, 0.5, 0.5, 1
+    #             text: "₱"+str(root.total_price)
+    #             halign: "right"
+        
+    #     BoxLayout:
+    #         orientation: 'horizontal'
+    #         size_hint_y: None
+    #         height: dp(25)
+    #         LeftLabel:
+    #             color: 0.5, 0.5, 0.5, 1
+    #             text: "Shipping Subtotal"
+    #         LeftLabel:
+    #             color: 0.5, 0.5, 0.5, 1
+    #             text: "₱50"
+    #             halign: "right"
+
+    #     BoxLayout:
+    #         orientation: 'horizontal'
+    #         size_hint_y: None
+    #         height: dp(25)
+    #         LeftLabel:
+    #             size_hint_x: 0.7
+    #             color: 0.5, 0.5, 0.5, 1
+    #             text: "Discount Subtotal"
+    #         LeftLabel:
+    #             text: "-₱10"
+    #             halign: "right"
+    #             color: GetColor("#AC5EA3")
+
+    #     BoxLayout:
+    #         orientation: 'horizontal'
+    #         size_hint_y: None
+    #         height: dp(25)
+    #         LeftLabel:
+    #             color: 0.3, 0.3, 0.3, 1
+    #             text: "Total Payment"
+    #             font_size: '16sp'
+    #         LeftLabel:
+    #             color: 0.3, 0.3, 0.3, 1
+    #             text: "₱"+str(root.total_price+40)
+    #             font_size: '16sp'
+    #             halign: "right"
+    # SpaceWidget:    
+    #     height: Window.height * 0.05

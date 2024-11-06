@@ -9,12 +9,14 @@ from kivy.uix.scrollview import ScrollView
 from kivy.utils import get_color_from_hex as GetColor
 
 class ThemedPopup(Popup):
-	def __init__(self, manager, title="Popup", message="", **kwargs):
+	def __init__(self, manager, title="Popup", message="", separator_height=dp(2), **kwargs):
 		super().__init__(**kwargs)
-
 		white_color   = GetColor("#FFFFFF")
 		pinkish_color = GetColor(manager.theme.main_color)
 		text_color    = GetColor("#333333")
+
+		self.separator_height = separator_height
+		self.separator_color = pinkish_color
 
 		layout = BoxLayout(orientation='vertical', padding=dp(20), spacing=dp(20))
 		scroll_view = ScrollView(size_hint=(1, None), height=dp(120))
@@ -25,7 +27,7 @@ class ThemedPopup(Popup):
 		scroll_view.add_widget(self.error_message)
 
 		close_button = Button(text="Close", size_hint=(1, None), height=dp(40),
-							  background_normal='', background_color=pinkish_color, color=white_color)
+						background_normal='', background_color=pinkish_color, color=white_color)
 		close_button.bind(on_press=self.dismiss)
 
 		layout.add_widget(scroll_view)
@@ -35,11 +37,11 @@ class ThemedPopup(Popup):
 		self.title_color = pinkish_color
 		self.title_align = 'center'
 		self.content = layout
+		
 		self.size_hint = (0.8, 0.4)
 		self.auto_dismiss = False
 
 		self.background = ''
-
 		self.bind(size=self.update_size)
 
 	def update_size(self, *_):

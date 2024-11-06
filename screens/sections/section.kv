@@ -1,0 +1,832 @@
+#:import ScrollEffect kivy.effects.scroll.ScrollEffect
+#:import Utility widgets.Utility
+#:import Product widgets.Product
+
+<ImageButton@ButtonBehavior+Image>:
+
+<TopLayout>:
+	size_hint_x: 0.9
+	font_size: sp(16)
+	halign: 'left'
+	valign: 'top'
+	bold: True
+    text_size: self.width * 0.9, None
+
+<NotificationWidget>:
+    orientation: 'vertical'
+    size_hint_y: None
+    height: root.height * 0.10
+    height: self.minimum_height
+    padding: '15dp'
+    spacing: '10dp'
+
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(5), ]
+
+        Color:
+            rgba: 0, 0, 0, 0.1
+        RoundedRectangle:
+            pos: (self.x - dp(2), self.y - dp(2))
+            size: (self.width + dp(4), self.height + dp(4))
+            radius: [dp(5), ]
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: None
+        height: root.height * 0.005
+        spacing: '5dp'
+        Label:
+            size_hint_x: 1
+            text: ("[color=#aa3333]Unread[/color]" if root.unread else "")  + " " + root.title
+            bold: True
+            markup: True
+            color: 0, 0, 0, 1
+            font_size: sp(14)
+            text_size: self.width, None
+            halign: 'left'
+        
+        ImageButton:
+            source: "assets/arrow-right.png" 
+            size_hint_x: 0.05
+            size_hint_y: None
+            height: dp(20)
+            width: dp(20)
+            color: "#333333"
+            pos_hint: {'center_y': 0.5}
+            on_release: root.open_notification()
+
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint_y: None
+        height: root.height * 0.08
+        height: self.minimum_height
+        spacing: '10dp'
+        Label:
+            text: root.message
+            color: 0.2, 0.2, 0.2, 1
+            font_size: sp(12)
+            text_size: self.width, None
+            halign: 'left'
+            size_hint_y: None
+            height: self.texture_size[1]
+
+        Label:
+            text: root.date
+            color: 0.5, 0.5, 0.5, 1
+            font_size: sp(10)
+            size_hint_y: None
+            height: dp(10)
+            text_size: self.width, None
+            halign: 'left'
+
+<NotificationSection>:
+
+    ScrollView:
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        StackLayout:
+            padding: ('10dp', '10dp', '10dp', '10dp')          
+            spacing: '5dp'
+            height: self.minimum_height
+
+            NotificationWidget:
+
+
+
+
+
+
+
+<ProfileSection>:
+    ScrollView:
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        StackLayout:
+            padding: '10dp'
+            spacing: '10dp'
+            height: self.minimum_height
+            size_hint_y: None
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+                padding: '10dp'
+                spacing: '5dp'
+
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                
+                Widget:
+                    size_hint: (None, None)
+                    size: (dp(100), dp(100))
+                    pos_hint: {'center_x': 0.5}
+                    canvas.before:
+                        Color:
+                            rgba: 0.8, 0.8, 0.8, 1
+                        Ellipse:
+                            pos: self.pos
+                            size: self.size
+                        
+                        Color:
+                            rgba: 1, 1, 1, 1
+                        Ellipse:
+                            source: "assets/profile.png" 
+                            pos: self.pos
+                            size: self.size
+
+                # User Name
+                Label:
+                    text: app.sm.main_state['user']['username']
+                    font_size: sp(20)
+                    halign: 'center'
+                    valign: 'middle'
+                    color: (0, 0, 0, 1)
+                    size_hint_y: None
+                    height: dp(30)
+
+                Label:
+                    text: "" 
+                    font_size: sp(12)
+                    halign: 'center'
+                    valign: 'middle'
+                    color: (0.5, 0.5, 0.5, 1)
+                    size_hint_y: None
+                    height: dp(20) if self.text else dp(0)
+
+                CustomButtonWidget:
+                    text: "Edit Profile"
+                    size_hint_x: 0.5
+                    pos_hint: {'center_x': 0.5}
+                    size_hint_y: None
+                    height: dp(30)
+                    on_release: root.open_edit_profile()
+
+
+            # BoxLayout:
+            #     size_hint_y: None
+            #     height: root.height * 0.1
+            #     padding: '10dp'
+            #     spacing: '10dp'
+            #     canvas.before:
+            #         Color:
+            #             rgba: 1, 1, 1, 1
+            #         RoundedRectangle:
+            #             pos: self.pos
+            #             size: self.size
+            #             radius: [dp(10), ]
+
+            #     CustomButtonWidget:
+            #         text: "Orders"
+            #         # on_press: root.go_to_orders()
+            #         size_hint_x: 0.5
+            #         default_color: "315cad"
+
+            #     CustomButtonWidget:
+            #         text: "My Purchases"
+            #         # on_press: root.go_to_purchases()
+            #         size_hint_x: 0.5
+            #         default_color: "315cad"
+
+            # Section for 'To Pay', 'To Ship', 'To Receive', 'To Rate'
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: None
+                height: root.height * 0.15
+                padding: '10dp'
+                spacing: '10dp'
+
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: '5dp'
+                    ImageButton:
+                        source: "assets/topay.png" 
+                        size_hint_y: None
+                        height: dp(40)
+                        color: (0.5, 0.5, 0.5, 1)
+                        on_release: root.go_to_pay()
+
+                    Label:
+                        text: "To Pay"
+                        font_size: sp(12)
+                        halign: 'center'
+                        valign: 'middle'
+                        size_hint_y: None
+                        height: dp(20)
+                        color: (0.3, 0.3, 0.3, 1)
+
+                # To Ship
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: '5dp'
+                    ImageButton:
+                        source: "assets/toship.png" 
+                        size_hint_y: None
+                        height: dp(40)
+                        color: (0.5, 0.5, 0.5, 1)
+                        on_release: root.go_to_ship()
+
+                    Label:
+                        text: "To Ship"
+                        font_size: sp(12)
+                        halign: 'center'
+                        valign: 'middle'
+                        size_hint_y: None
+                        height: dp(20)
+                        color: (0.3, 0.3, 0.3, 1)
+
+                # To Receive
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: '5dp'
+                    ImageButton:
+                        source: "assets/toreceive.png"
+                        size_hint_y: None
+                        height: dp(40)
+                        color: (0.5, 0.5, 0.5, 1)
+                        on_release: root.go_to_receive()
+
+                    Label:
+                        text: "To Receive"
+                        font_size: sp(12)
+                        halign: 'center'
+                        valign: 'middle'
+                        size_hint_y: None
+                        height: dp(20)
+                        color: (0.3, 0.3, 0.3, 1)
+
+                # To Rate
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: '5dp'
+                    ImageButton:
+                        source: "assets/torate.png"
+                        size_hint_y: None
+                        height: dp(40)
+                        color: (0.5, 0.5, 0.5, 1)
+                        on_release: root.go_is_complete()
+
+                    Label:
+                        text: "Complete"
+                        font_size: sp(12)
+                        halign: 'center'
+                        valign: 'middle'
+                        size_hint_y: None
+                        height: dp(20)
+                        color: (0.3, 0.3, 0.3, 1)
+
+            # Section for 'My Likes', 'Recently Viewed', 'Buy Again'
+            GridLayout:
+                # orientation: 'horizontal'
+                id: bottom_grid
+                size_hint_y: None
+                height: root.height * 0.12
+                cols: 2
+                spacing: '10dp'
+
+                CustomButtonWidget:
+                    id: who_order
+                    text: "Who Orders"
+                    on_release: root.go_is_order()
+                    size_hint_x: 0.33
+                    default_color: app.sm.theme.darker_color
+                    text_size: self.width, None
+                    halign: 'center'
+                    valign: 'center'
+
+                CustomButtonWidget:
+                    id: my_product
+                    text: "My Products"
+                    on_release: root.go_to_my_products()
+                    size_hint_x: 0.33
+                    default_color: app.sm.theme.darker_color
+                    text_size: self.width, None
+                    halign: 'center'
+                    valign: 'center'
+
+                CustomButtonWidget:
+                    text: "Recently Viewed"
+                    on_release: root.go_to_recently_viewed()
+                    size_hint_x: 0.33
+                    default_color: app.sm.theme.darker_color
+                    text_size: self.width, None
+                    halign: 'center'
+                    valign: 'center'
+
+                CustomButtonWidget:
+                    text: "Buy Again"
+                    on_release: root.go_to_buy_again()
+                    size_hint_x: 0.33
+                    default_color: app.sm.theme.darker_color
+                    text_size: self.width, None
+                    halign: 'center'
+                    valign: 'center'
+            
+            CustomButtonWidget:
+                text: "Become a Seller"
+                size_hint_y: None
+                height: root.height * 0.05
+                on_press: root.become_seller()
+            
+            CustomButtonWidget:
+                text: "Sign Out"
+                size_hint_y: None
+                default_color: "#cc4433"
+
+                height: root.height * 0.05
+                on_press: root.sign_out()
+
+
+
+
+
+
+
+
+
+
+
+<Product>:
+    canvas.before:
+        Color:
+            rgba: GetColor("#ffffff")
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [dp(5)]
+
+    BoxLayout:
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        orientation: 'vertical'
+        padding: dp(5)
+        spacing: dp(5)
+
+        AsyncImage:
+            source: root.product_image
+            size_hint_y: 0.7
+
+        Label:
+            text: root.product_name[:20] + ("..." if len(root.product_name) >= 20 else "")
+            size_hint_y: None
+            height: dp(20)
+            halign: 'left'
+            valign: 'middle'
+            color: 0, 0, 0, 1
+            font_size: sp(12)
+            text_size: self.size
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(20)
+            spacing: dp(5)
+
+            Label:
+                text: f"₱{root.product_price}"
+                size_hint_x: 0.5
+                halign: 'left'
+                valign: 'middle'
+                color: 1, 0, 0, 1
+                font_size: sp(12)
+                text_size: self.size
+
+            Label:
+                text: f"Sold: {root.product_sold}"
+                size_hint_x: 0.5
+                halign: 'right'
+                valign: 'middle'
+                color: 0, 0, 0, 0.6
+                font_size: sp(12)
+                text_size: self.size
+
+
+<ProductOrdered>:
+    canvas.before:
+        Color:
+            rgba: GetColor("#ffffff")
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [dp(5)]
+
+    BoxLayout:
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        orientation: 'horizontal'
+        padding: dp(5)
+        spacing: dp(5)
+
+        AsyncImage:
+            source: root.product_image
+            size_hint_x: None
+            width: Window.height * 0.2
+
+        BoxLayout:
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            orientation: 'vertical'
+            padding: dp(5)
+            spacing: dp(5)
+            Label:
+                text: root.product_name[:20] + ("..." if len(root.product_name) >= 20 else "")
+                size_hint_y: None
+                height: dp(20)
+                halign: 'left'
+                valign: 'middle'
+                color: 0, 0, 0, 1
+                font_size: sp(12)
+                text_size: self.size
+
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: None
+                height: dp(20)
+                spacing: dp(5)
+
+                Label:
+                    text: f"₱{root.product_price}"
+                    size_hint_x: 0.5
+                    halign: 'left'
+                    valign: 'middle'
+                    color: 1, 0, 0, 1
+                    font_size: sp(12)
+                    text_size: self.size
+
+                Label:
+                    text: f"Quantity: {root.product_num_ordered}"
+                    size_hint_x: 0.5
+                    halign: 'right'
+                    valign: 'middle'
+                    color: 0, 0, 0, 0.6
+                    font_size: sp(12)
+                    text_size: self.size
+
+            BoxLayout:
+                orientation: 'vertical'
+                spacing: dp(5)
+                size_hint_y: None
+                height: dp(60)
+                
+                CustomButtonWidget:
+                    text: "DETAILS" if root.is_to_pay else "TRACK" if root.is_to_ship else "RATE" if root.is_to_receive else "SHIP" if root.is_order else "VIEW"
+                    opacity: 0 if root.is_to_pay else 1
+                    disabled: root.is_to_pay
+
+                    on_release: root.open_ship() if root.is_order else root.none_func()
+
+                CustomButtonWidget:
+                    text: "CANCEL" if root.is_to_pay else "DETAILS" if root.is_to_ship else "DETAILS" if root.is_to_receive else "DECLINE" if root.is_order else "-----"
+                    opacity: 0 if root.is_complete else 1
+                    disabled: root.is_complete
+
+                    on_release: root.cancel_order()
+
+
+
+<ProductSection>:
+    product_grid: product_grid
+
+    ScrollView:
+        size_hint: 0.95, 0.95
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        effect_cls: ScrollEffect
+        GridLayout:
+            id: product_grid
+            cols: 1
+            spacing: Utility.get_value_percentage(Window.height, 0.01)
+            size_hint_y: None
+            height: self.minimum_height
+
+<MyLikes>:
+    product_grid: product_grid
+
+    ScrollView:
+        size_hint: 0.95, 0.95
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        effect_cls: ScrollEffect
+        GridLayout:
+            id: product_grid
+            cols: 2
+            spacing: Utility.get_value_percentage(Window.height, 0.01)
+            size_hint_y: None
+            height: self.minimum_height
+
+<OrderedProductListSection>:
+    product_grid: product_grid
+    ScrollView:
+        size_hint: 0.95, 0.95
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        effect_cls: ScrollEffect
+        GridLayout:
+            id: product_grid
+            cols: 1
+            spacing: Utility.get_value_percentage(Window.height, 0.01)
+            size_hint_y: None
+            height: self.minimum_height
+# <ToPay>:
+#     product_grid: product_grid
+#     ScrollView:
+#         size_hint: 0.95, 0.95
+#         pos_hint: {"center_x": 0.5, "center_y": 0.5}
+#         effect_cls: ScrollEffect
+#         GridLayout:
+#             id: product_grid
+#             cols: 1
+#             spacing: Utility.get_value_percentage(Window.height, 0.01)
+#             size_hint_y: None
+#             height: self.minimum_height
+# <ToShip>:
+#     product_grid: product_grid
+#     ScrollView:
+#         size_hint: 0.95, 0.95
+#         pos_hint: {"center_x": 0.5, "center_y": 0.5}
+#         effect_cls: ScrollEffect
+#         GridLayout:
+#             id: product_grid
+#             cols: 1
+#             spacing: Utility.get_value_percentage(Window.height, 0.01)
+#             size_hint_y: None
+#             height: self.minimum_height
+
+<MyProducts>:
+    product_grid: product_grid
+
+    ScrollView:
+        size_hint: 0.95, 0.95
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        effect_cls: ScrollEffect
+        GridLayout:
+            id: product_grid
+            cols: 2
+            spacing: Utility.get_value_percentage(Window.height, 0.01)
+            size_hint_y: None
+            height: self.minimum_height
+    
+    CustomButtonWidget:
+        text: "ADD PRODUCT"
+        size_hint_y: None
+        height: Window.height * 0.05
+        pos_hint: { 'center_x': 0.5 }
+        y: Window.height * 0.1
+        on_release: root.add_product()
+
+
+<CheckUserProducts>:
+    product_grid: product_grid
+
+    ScrollView:
+        size_hint: 0.95, 0.95
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        effect_cls: ScrollEffect
+        GridLayout:
+            id: product_grid
+            cols: 2
+            spacing: Utility.get_value_percentage(Window.height, 0.01)
+            size_hint_y: None
+            height: self.minimum_height
+
+<RecentlyViewed>:
+    product_grid: product_grid
+
+    ScrollView:
+        size_hint: 0.95, 0.95
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        effect_cls: ScrollEffect
+        GridLayout:
+            id: product_grid
+            cols: 2
+            spacing: Utility.get_value_percentage(Window.height, 0.01)
+            size_hint_y: None
+            height: self.minimum_height
+
+
+<CategoryItem@BoxLayout+ButtonBehavior>:
+    category_name: ""
+    icon_source: ""
+
+    orientation: 'vertical'
+    size_hint_y: None
+    height: dp(60)
+    padding: dp(5)
+    on_press: app.go_to_category(root.category_name)
+
+    Image:
+        source: root.icon_source
+        size_hint_y: 0.7
+        allow_stretch: True
+
+    Label:
+        text: root.category_name
+        font_size: sp(12)
+        size_hint_y: 0.3
+        halign: 'center'
+        valign: 'middle'
+        text_size: self.size
+
+
+<MallSection>:
+    product_grid: product_grid
+
+    ScrollView:
+        size_hint: 0.95, 0.95
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        effect_cls: ScrollEffect
+        GridLayout:
+            id: product_grid
+            cols: 2
+            spacing: Utility.get_value_percentage(Window.height, 0.01)
+            size_hint_y: None
+            height: self.minimum_height
+
+        # BoxLayout:
+        #     orientation: 'vertical'
+        #     size_hint_y: None
+        #     height: self.minimum_height
+        #     padding: dp(10)
+        #     spacing: dp(10)
+
+            # GridLayout:
+            #     cols: 4
+            #     rows: 2 
+            #     spacing: dp(10)
+            #     size_hint_y: None
+            #     height: self.minimum_height
+
+            #     CategoryItem:
+            #         icon_source: 'assets/category1.png'
+            #         category_name: 'Category 1'
+
+            #     CategoryItem:
+            #         icon_source: 'assets/category2.png'
+            #         category_name: 'Category 2'
+
+            #     CategoryItem:
+            #         icon_source: 'assets/category3.png'
+            #         category_name: 'Category 3'
+
+            #     CategoryItem:
+            #         icon_source: 'assets/category4.png'
+            #         category_name: 'Category 4'
+
+            #     CategoryItem:
+            #         icon_source: 'assets/category5.png'
+            #         category_name: 'Category 5'
+
+            #     CategoryItem:
+            #         icon_source: 'assets/category6.png'
+            #         category_name: 'Category 6'
+
+            #     CategoryItem:
+            #         icon_source: 'assets/category7.png'
+            #         category_name: 'Category 7'
+
+            #     CategoryItem:
+            #         icon_source: 'assets/category8.png'
+            #         category_name: 'Category 8'
+
+            # GridLayout:
+            #     id: product_grid
+            #     cols: 2
+            #     spacing: Utility.get_value_percentage(Window.height, 0.01)
+            #     size_hint_y: None
+            #     height: self.minimum_height
+
+
+
+
+
+
+
+
+
+
+<CommentItem>:
+    orientation: 'horizontal'
+    size_hint_y: None
+    height: dp(60)
+    padding: dp(10)
+    spacing: dp(10)
+
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(5), ]
+
+    Widget:
+        size_hint_x: None
+        size_hint_y: None
+        size: dp(40), dp(40)
+        canvas.before:
+            Color:
+                rgba: (0.9, 0.9, 0.9, 1) if root.profile_pic == "" else (1, 1, 1, 1)
+            Ellipse:
+                size: self.size
+                pos: self.pos
+                source: root.profile_pic
+            
+            Color:
+                rgba: (0.3, 0.3, 0.3, 1)
+            Line:
+                ellipse: self.x, self.y, self.width, self.height
+
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: dp(5)
+
+        Label:
+            text: root.user_name
+            font_size: sp(14)
+            bold: True
+            color: (0.1, 0.1, 0.1, 1)
+            text_size: self.width, None
+
+        Label:
+            text: root.comment
+            font_size: sp(12)
+            color: (0.3, 0.3, 0.3, 1)
+            text_size: self.width, self.height
+            halign: 'left'
+            valign: 'top'
+
+<ChatSection>:
+    ScrollView:
+        size_hint: 0.95, 0.95
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+        StackLayout:
+            id: comment_list
+            size_hint_y: None
+            height: self.minimum_height
+            spacing: dp(5)
+
+            # CommentItem:
+            #     profile_pic: 'assets/profile2.png'
+            #     user_name: 'Jane Smith'
+            #     comment: 'Another comment, but this one is shorter.'
+
+            # CommentItem:
+            #     profile_pic: 'assets/profile3.png'
+            #     user_name: 'Chris Johnson'
+            #     comment: 'This is a longer comment to show how the text can wrap. It gives a better sense of what a real comment might look like if the user decides to write more.'
+
+<CartSection>:
+    product_grid: product_grid
+    BoxLayout:
+        orientation: "vertical"
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        spacing: dp(10)
+        padding: dp(10)
+
+        ScrollView:
+            effect_cls: ScrollEffect
+            GridLayout:
+                id: product_grid
+                cols: 1
+                spacing: Utility.get_value_percentage(Window.height, 0.01)
+                size_hint_y: None
+                height: self.minimum_height
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(50)
+            padding: dp(10)
+            spacing: dp(10)
+            canvas.before:
+                Color:
+                    rgba: GetColor(app.sm.theme.darker_color)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+            Label:
+                text: "  Total: ₱" + str(root.total_product)
+                font_size: sp(12)
+                size_hint_x: 0.6
+                bold: True
+                halign: "left"
+                valign: "center"
+                text_size: self.width, None 
+
+            Widget:
+                size_hint_x: 0.3
+            # RoundedButton:
+            #     text: "Delete"
+            #     color: (1, 1, 1, 1)
+            #     size_hint_x: 0.3
+            #     bg_color: GetColor(app.sm.theme.main_color)
+            #     on_press: app.checkout()
+            RoundedButton:
+                text: "CHECKOUT"
+                color: (1, 1, 1, 1)
+                size_hint_x: 0.4
+                bg_color: GetColor(app.sm.theme.main_color)
+                on_press: root.buy_now_product()

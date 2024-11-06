@@ -1,0 +1,185 @@
+#:import GetColor kivy.utils.get_color_from_hex
+#:import Window kivy.core.window.Window
+
+<SpaceWidget@Widget>:
+    size_hint_y: None
+    height: Window.height * 0.025
+
+
+<BindWidget>:
+    canvas.before:
+        Color:
+            rgba: GetColor("#ffffff")
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: root.radius
+
+
+<ProductItem>:
+    orientation: 'vertical'
+    size_hint_y: None
+    size_hint_x: 0.95
+    pos_hint: {'center_x': 0.5}
+    height: self.minimum_height
+    padding: dp(10)
+    
+    LeftLabel:
+        size_hint_y: None
+        height: dp(30)
+        text: root.seller_name
+        font_size: '14sp'
+        color: 0, 0, 0, 1
+
+        canvas.before:
+            Color:
+                rgba: 0.9, 0.9, 0.9, 1
+            Line:
+                points: [self.x, self.y, self.width, self.y]
+                width: 1
+    
+    CustomBoxLayout:
+        size_hint_y: None
+        height: dp(70)
+        orientation: 'horizontal'
+        padding: dp(5)
+        spacing: dp(10)
+        
+        AsyncImage:
+            source: root.product_image
+            size_hint_x: None
+            width: dp(60)
+            canvas.before:
+                Color:
+                    rgba: 0.9, 0.9, 0.9, 1
+                Rectangle:
+                    size: self.width + dp(2), self.height + dp(2)
+                    pos: self.x - dp(1), self.y - dp(1)
+        
+        CustomBoxLayout:
+            orientation: 'vertical'
+            
+            LeftLabel:
+                text: root.product_name
+                font_size: '14sp'
+                color: 0.4, 0.4, 0.4, 1
+            
+            CustomBoxLayout:
+                orientation: 'horizontal'
+                
+                LeftLabel:
+                    text: "₱"+str(root.product_price)
+                    font_size: '14sp'
+                    color: GetColor("#AC5EA3")
+                    bold: True
+                
+                BoxLayout:
+                    orientation: 'horizontal'
+
+                    Button:
+                        text: "-"
+                        font_size: sp(20)
+                        size_hint_x: None
+                        width: dp(30)
+                        background_color: GetColor("#AC5EA3")
+                        background_normal: ""
+                        on_release: setattr(root, 'product_qty', max(root.product_qty-1, 1))
+
+                    Label:
+                        text: str(root.product_qty)
+                        font_size: sp(16)
+                        color: (0.5, 0.5, 0.5, 1)
+                        size_hint_x: None
+                        width: dp(50)
+                        halign: 'center'
+                        valign: 'middle'
+                        text_size: self.size
+
+                    Button:
+                        text: "+"
+                        font_size: sp(20)
+                        size_hint_x: None
+                        width: dp(30)
+                        background_normal: ""
+                        background_color: GetColor("#AC5EA3")
+                        on_release: setattr(root, 'product_qty', root.product_qty+1)
+
+
+<LeftLabel>:
+    halign: 'left'
+	valign: 'top'
+    text_size: self.width, None
+
+<CustomTextInput@TextInput>:
+    size_hint_y: None
+    height: dp(30)
+    font_size: sp(12)
+    color: 0.3, 0.3, 0.3, 1
+    radius: dp(0)
+
+    background_color: 0.95, 0.95, 0.95, 1
+    background_normal: ""
+    halign: 'left'
+    valign: 'center'
+    foreground_color: 0.3, 0.3, 0.3, 1
+
+    shorten: True
+    shorten_from: 'right'
+    ellipsis_options: {'color': (1, 0, 0, 1)}
+
+    multiline: False
+    canvas.before:
+        Color:
+            rgba: 0.3, 0.3, 0.3, 1
+        Line:
+            rounded_rectangle: self.x, self.y, self.width, self.height, root.radius, root.radius, root.radius, root.radius
+
+<RoundedButton@Button>:
+    bg_color: (1, 1, 1, 1)
+    background_color: 0, 0, 0, 0
+    background_normal: ""
+
+    canvas.before:
+        Color:
+            rgba: self.bg_color 
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+
+<CustomButtonWidget>
+	default_color: "9C3E93"
+	pressed_color: 0, 0, 0, 0.3
+
+	background_normal: ''
+	background_color: 0, 0, 0, 0
+	color: 1, 1, 1, 1
+	bold: True
+
+	canvas.before:
+		Color:
+			rgba: GetColor(self.default_color)
+		RoundedRectangle:
+			size: self.size
+			pos: self.pos
+			radius:	[dp(10)]
+        
+        Color:
+            rgba: self.pressed_color if self.state == 'down' else (0, 0, 0, 0)
+        RoundedRectangle:
+			size: self.size
+			pos: self.pos
+			radius:	[dp(10)]
+
+<LineWidget@Widget>:
+    size_hint_x: None
+    size_hint_y: None
+    width: Window.width
+    height: Window.height * 0.001
+    pos_hint: {'center_x': 0.5}
+    canvas.before:
+        Color:
+            rgba: 0.3, 0.3, 0.3, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+

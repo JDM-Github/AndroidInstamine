@@ -9,7 +9,6 @@ from kivy.clock import Clock
 from kivy.metrics import dp, sp
 from kivy.utils import get_color_from_hex as GetColor
 from kivy.graphics import Rectangle, RoundedRectangle, Color
-from kivy.uix.screenmanager import SlideTransition
 
 from widgets import RoundedTextInput, CustomButton, LoadingPopup, Utility, ThemedPopup, DatePickerPopup
 from handle_requests import RequestHandler
@@ -72,12 +71,10 @@ class RegisterScreen(Screen):
 			Rectangle(size=self.size)
 
 			Color(rgba=GetColor(self.manager.theme.main_color))
-			height = Utility.get_value_percentage(self.height, 0.25)
+			height = Utility.get_value_percentage(self.height, 0.20)
 			RoundedRectangle(pos=(self.x, self.height-height), size=(self.width, height), radius=[0, 0, dp(30), dp(30)])
 
 		self.display_widget()
-
-
 
 	def display_widget(self):
 		self.clear_widgets()
@@ -109,6 +106,8 @@ class RegisterScreen(Screen):
 
 		self.birthday.input.readonly = True
 		register_btn = CustomButton(self.manager, text="Sign Up", on_press=self.register)
+		verify_btn = CustomButton(self.manager, text="Verify Email", on_press=self.verify_email)
+
 		self.name_layout.add_widget(self.first_name)
 		self.name_layout.add_widget(self.last_name)
 		self.terms_agreement = TermsAgreement(self.manager)
@@ -124,6 +123,7 @@ class RegisterScreen(Screen):
 		layout.add_widget(Widget(size_hint_y=None, height=dp(10)))
 		layout.add_widget(self.terms_agreement)
 		layout.add_widget(register_btn)
+		layout.add_widget(verify_btn)
 
 		layout.add_widget(Widget(size_hint_y=None, height=dp(10)))
 		ref_login = Label(
@@ -149,6 +149,9 @@ class RegisterScreen(Screen):
 
 	def set_birthday_text(self, text):
 		self.birthday.input.text = text
+	
+	def verify_email(self):
+		self.manager.current = 'verify'
 
 	def register(self):
 		self.loading = LoadingPopup(self.manager)
@@ -165,7 +168,7 @@ class RegisterScreen(Screen):
 			return
 		if not Utility.validate_birthday(self.birthday, error_color, success_color, self.manager.main_config['at_least_years_user'], self._on_error):
 			return
-			
+
 		email_pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
 		if not Utility.validate_email(self.email, email_pattern, error_color, success_color, self._on_error):
 			return
@@ -174,12 +177,12 @@ class RegisterScreen(Screen):
 			return
 
 		if not self.terms_agreement.checkbox.active:
-			self._on_error('', "User did not accept user terms and agreement.")
+			self._on_error({'message': "User did not accept user terms and agreement."})
 			return
 
 		threading.Thread(target=self._register).start()
 
-	
+
 	def show_error_popup(self, message):
 		popup = ThemedPopup(
 			self.manager,
@@ -188,27 +191,28 @@ class RegisterScreen(Screen):
 		popup.open()
 
 	def go_to_login(self):
-		self.manager.transition = SlideTransition(direction='right', duration=0.5)
 		self.manager.current = 'login'
-
-
-
-
 
 	def _register(self):
 		result, message = RequestHandler.create_request(
-			link="register",
+			method="post",
+			link="user/create",
 			data={
-				'username': self.username.input.text,
-				'email'   : self.email.input.text,
-				'password': self.password.input.text
+				'firstName': self.first_name.input.text,
+				'lastName' : self.last_name.input.text,
+				'username' : self.username.input.text,
+				'birthdate': self.birthday.input.text,
+				'email'    : self.email.input.text,
+				'password' : self.password.input.text,
+				'isSeller' : False,
+				'organizationName': None
 			}
 		)
+
 		if result:
 			self.on_success(message)
 		else:
 			self.on_error(message)
-
 
 	def on_success(self, result):
 		Clock.schedule_once(lambda dt: self._on_success(result))
@@ -218,10 +222,16 @@ class RegisterScreen(Screen):
 
 	def _on_success(self, result):
 		self.remove_widget(self.loading)
-		# self.manager.get_screen('verify').to_verify = result['otp']
-		self.manager.current = 'login'
+		
+		popup = ThemedPopup(
+			self.manager,
+			title='Registration Success',
+			message=result.get('message'))
+		popup.open()
 
-	def _on_error(self, error, error_message="Error occurred while processing the request."):
+		self.manager.verify.set_data({ 'email': self.email.input.text })
+		self.manager.current = 'verify'
+
+	def _on_error(self, error):
 		self.remove_widget(self.loading)
-		print(f"Error: {error}")
-		self.show_error_popup(error_message)
+		self.show_error_popup(error.get('message'))
