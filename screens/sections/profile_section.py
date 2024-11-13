@@ -35,48 +35,21 @@ class ProfileSection(BaseSection):
     def open_edit_profile(self):
         popup = EditProfile(self.manager)
         popup.open()
-
-    def become_seller(self):
-        app = App.get_running_app()
-        manager = app.sm
-
-        if manager.main_state['user']['isSeller']:
-            popup = ThemedPopup(
-                manager,
-                title='Account Become a Seller',
-                message="You are already a seller")
-            popup.open()
-        else:
-            RequestHandler.request_loader(self.parent, manager,
-                lambda: RequestHandler.create_req_suc_error("post", "user/seller",
-                    {'email': manager.main_state['user']['email']}, self.on_success, self.on_error))
     
     def remove_widgets(self, *args):
         app = App.get_running_app()
         manager = app.sm
 
         if not manager.main_state['user']['isSeller']:
-            if self.ids.who_order in self.ids.bottom_grid.children:
-                self.ids.bottom_grid.remove_widget(self.ids.who_order)
-            if self.ids.my_product in self.ids.bottom_grid.children:
-                self.ids.bottom_grid.remove_widget(self.ids.my_product)
+            self.ids.bottom_grid.remove_widget(self.ids.who_order)
+            self.ids.bottom_grid.remove_widget(self.ids.my_product)
+        else:
+            self.ids.orders.parent.remove_widget(self.ids.orders)
+            self.ids.top_profile.parent.remove_widget(self.ids.top_profile)
 
-    def on_error(self, error):
-        app = App.get_running_app()
-        manager = app.sm
-        RequestHandler.show_error_popup(manager, "Becoming a Seller Failed", "Becoming a Seller: " + error.get('message'))
-
-    def on_success(self, result):
-        app = App.get_running_app()
-        manager = app.sm
-
-        manager.main_state['user']['isSeller'] = True
-        manager.save_json_config('state.json', manager.main_state)
-        popup = ThemedPopup(
-            manager,
-            title='Account Become a Seller',
-            message=result.get('message'))
-        popup.open()
+            self.ids.bottom_grid.remove_widget(self.ids.buy_again)
+            self.ids.bottom_grid.remove_widget(self.ids.recently_viewed)
+            
 
     def go_to_my_products(self):
         app = App.get_running_app()

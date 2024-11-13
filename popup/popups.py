@@ -226,3 +226,47 @@ class StartStream(Popup):
         self.dismiss()
         app = App.get_running_app()
         app.sm.live.start_live(self.link_text)
+
+
+
+class Payment(Popup):
+    main_image_path = StringProperty("")
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.file_manager = MDFileManager(
+            exit_manager=self.exit_manager,
+            select_path=self.select_path,
+        )
+
+    def choose_main_image(self):
+        self.main_image_path = ""
+        self.file_manager_open()
+
+    def file_manager_open(self):
+        self.file_manager.show('/')
+
+    def exit_manager(self, *args):
+        self.file_manager.close()
+
+    def select_path(self, path):
+        if not self.main_image_path:
+            self.main_image_path = path
+        self.file_manager.close()
+
+    def submit_order(self):
+        if not self.main_image_path:
+            self.show_error_dialog("Please choose a main image.")
+        # elif len(self.additional_images) > 5:
+        #     self.show_error_dialog("You cannot add more than 5 additional images.")
+        # else:
+        #     print("Product created with main image:", self.main_image_path)
+        #     print("Additional images:", self.additional_images)
+        #     self.dismiss()
+
+    def show_error_dialog(self, message):
+        dialog = MDDialog(
+            text=message,
+            buttons=[MDButton(text="OK", on_release=lambda x: dialog.dismiss())],
+        )
+        dialog.open()

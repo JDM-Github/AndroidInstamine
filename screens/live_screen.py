@@ -20,7 +20,7 @@ from kivy.properties import ObjectProperty, StringProperty, NumericProperty
 
 import io
 from kivy.core.image import Image as CoreImage
-from popup.popups import BuyOrder, ChatPopup
+from popup.popups import BuyOrder, ChatPopup, StartStream
 from widgets import CircleImage, RoundedTextInput, CustomButton, LoadingPopup, BackButton, Utility, ThemedPopup, CustomImageButton
 from handle_requests import RequestHandler
 from widgets.custom_button import CustomButtonWidget, LeftLabel
@@ -62,13 +62,9 @@ class CommentSection(BoxLayout):
         self.submit_button = CustomImageButton(self.manager, src='assets/send.png', size_hint=(0.1, 1),
             on_press=lambda : self.send_message(self.comment_input.input))
 
-        # self.add_comment("OTHER", "This is a test", False)
-        # self.add_comment("OTHER", "This is a test", False)
-        # self.add_comment("OTHER", "This is a test", False)
-
         self.share_button = CustomImageButton(self.manager, src='assets/share.png', size_hint=(0.1, 1))
 
-        input_layout = BoxLayout(size_hint=(1, 0.1), pos_hint={"center_x": 0.5}, spacing=10)
+        input_layout = BoxLayout(size_hint=(1, 0.12), pos_hint={"center_x": 0.5}, spacing=10)
         input_layout.add_widget(self.comment_input)
         input_layout.add_widget(self.submit_button)
         input_layout.add_widget(self.share_button)
@@ -92,11 +88,9 @@ class LiveScreen(Screen):
     def start_live(self, live_url):
         try:
             stream_url = self.manager.get_stream_url(live_url)
-            self.manager.sio.emit('start_stream', {"yt_url": stream_url, "streamId": self.manager.main_state['user']['id']})
-            # self.save_stream(stream_url)
+            self.manager.sio.emit('start_stream', {"yt_url": stream_url, "streamId": "1"})
+            self.manager.sio.emit("join_stream", {"streamId": "1"})
 
-
-            self.manager.sio.emit("join_stream", {"streamId": self.manager.main_state['user']['id']})
             @self.manager.sio.on('frame')
             def on_frame(data):
                 Clock.schedule_once(lambda dt: self.update_screen(data))
@@ -116,7 +110,7 @@ class LiveScreen(Screen):
             self.manager.main_state['user']['streamUrl'] = ""
             RequestHandler.show_error_popup(self.manager, "Starting stream error", "Invalid URL stream")
             self.manager.current = "home"
-    
+
     def end_stream(self):
         self.manager.sio.emit('end_stream', {"streamId": self.manager.main_state['user']['id']})
 
@@ -166,10 +160,6 @@ class LiveScreen(Screen):
 
             height = Utility.get_value_percentage(self.height, 0.08)
             self.top_color = Color(rgba=GetColor(self.manager.theme.main_color))
-            # RoundedRectangle   (
-            #     size=(self.width, height),
-            #     radius=[dp(30), dp(30), 0, 0]
-            # )
             Rectangle(
                 size=(self.width, height),
                 pos=(0, self.height-height),
@@ -199,10 +189,13 @@ class LiveScreen(Screen):
 
         self.back_button = CustomImageButton(self.manager, src='assets/back.png', size_hint=(0.1, 1),
             on_press=lambda *_: self.return_home())
-        checkout_label = LeftLabel(text="Live Screen", size_hint=(0.9, 1))
+        checkout_label = LeftLabel(text="Live Screen", size_hint=(0.8, 1))
+        self.start_stream = CustomImageButton(self.manager, src='assets/add.png', size_hint=(0.1, 1),
+            on_press=lambda *_: self.open_start_stream())
 
         self.top_bar_layout.add_widget(self.back_button)
         self.top_bar_layout.add_widget(checkout_label)
+        self.top_bar_layout.add_widget(self.start_stream)
 
         layout_scroll.add_widget(self.layout)
         widget.add_widget(layout_scroll)
@@ -215,6 +208,10 @@ class LiveScreen(Screen):
         self.manager.current = "home"
         self.manager.home.update_button_active("home")
     
+    def open_start_stream(self, *_):
+        popup = StartStream()
+        popup.open()
+
 
 class Comment(Label):
 

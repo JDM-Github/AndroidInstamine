@@ -88,14 +88,6 @@ class LiveSection(BaseSection):
         self.instamine_button.pos = (0, self.manager.height*0.6)
         self.add_widget(self.instamine_button)
 
-        if self.manager.main_state['user']['isSeller']:
-            self.back_button = CustomButton(self.manager, text="+", size_hint=(None, None), radius=[dp(50)])
-            self.back_button.pos_hint = {"x_pos": 0}
-            self.back_button.size = (dp(40), dp(40))
-            self.back_button.pos = (dp(5), self.manager.height - dp(50))
-            self.back_button.on_press = self.start_stream
-            self.add_widget(self.back_button)
-
     def create_comment_section(self):
         self.comment_section_layout = BoxLayout(orientation="vertical", size_hint=(0.85, 0.5), pos_hint={"center_x": 0.5})
         self.comment_section_layout.add_widget(Widget(size_hint=(1, 0.05)))
@@ -118,7 +110,7 @@ class LiveSection(BaseSection):
 
         self.share_button = CustomImageButton(self.manager, src='assets/share.png', size_hint=(0.1, 1))
 
-        input_layout = BoxLayout(size_hint=(1, 0.1), pos_hint={"center_x": 0.5}, spacing=10)
+        input_layout = BoxLayout(size_hint=(1, 0.12), pos_hint={"center_x": 0.5}, spacing=10)
         input_layout.add_widget(self.comment_input)
         input_layout.add_widget(self.submit_button)
         input_layout.add_widget(self.share_button)

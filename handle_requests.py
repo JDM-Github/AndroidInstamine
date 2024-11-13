@@ -7,8 +7,8 @@ from widgets import LoadingPopup, ThemedPopup
 
 class RequestHandler:
 
-	development = True
-	url_link = "https://test888.netlify.app"
+	development = False
+	url_link = "https://instantmine.netlify.app"
 	dev_link = "http://localhost:8888"
 
 	widget = None

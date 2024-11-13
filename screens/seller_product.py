@@ -108,13 +108,10 @@ class SellerProductScreen(Screen):
             height=Utility.get_value_percentage(self.height, 0.05), spacing=dp(10))
 
         self.back_button    = CustomImageButton(self.manager, src='assets/back.png', size_hint=(0.1, 1), on_press=self.return_to_home)
-        self.search_bar     = RoundedTextInput(icon_source='assets/pass.png', hint_text="Search...", size_hint=(0.7, 1))
-        self.cart_icon      = CustomImageButton(self.manager, src='assets/cart.png', size_hint=(0.1, 1))
         self.message_button = CustomImageButton(self.manager, src='assets/chats.png', size_hint=(0.1, 1))
 
         self.top_bar_layout.add_widget(self.back_button)
-        self.top_bar_layout.add_widget(self.search_bar)
-        self.top_bar_layout.add_widget(self.cart_icon)
+        self.top_bar_layout.add_widget(Widget(size_hint=(0.8, 1)))
         self.top_bar_layout.add_widget(self.message_button)
 
         layout_scroll.add_widget(self.layout)

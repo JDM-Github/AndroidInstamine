@@ -272,12 +272,11 @@ class ProductScreen(Screen):
             height=Utility.get_value_percentage(self.height, 0.05), spacing=dp(10))
 
         self.back_button    = CustomImageButton(self.manager, src='assets/back.png', size_hint=(0.1, 1), on_press=self.return_to_home)
-        self.search_bar     = RoundedTextInput(icon_source='assets/pass.png', hint_text="Search...", size_hint=(0.7, 1))
         self.cart_icon      = CustomImageButton(self.manager, src='assets/cart.png', size_hint=(0.1, 1))
         self.message_button = CustomImageButton(self.manager, src='assets/chats.png', size_hint=(0.1, 1))
 
         self.top_bar_layout.add_widget(self.back_button)
-        self.top_bar_layout.add_widget(self.search_bar)
+        self.top_bar_layout.add_widget(Widget(size_hint=(0.7, 1)))
         self.top_bar_layout.add_widget(self.cart_icon)
         self.top_bar_layout.add_widget(self.message_button)
 
@@ -304,19 +303,9 @@ class ProductScreen(Screen):
             self.manager.main_state['user']['phoneNumber'] == "":
             RequestHandler.show_error_popup(self.manager, "Order Error", "Please setup your account information.")
         else:
-            # popup = BuyOrder()
-            # popup.open()
             self.manager.checkout.update_checkout(self.product)
             self.manager.current = "checkout"
 
-        # RequestHandler.request_loader(self, self.manager,
-        #     lambda: RequestHandler.create_req_suc_error("post", "orders/createOrder",
-        #     {
-        #         'productId': self.product.get('id'),
-        #         'userId': self.manager.main_state['user']['id'],
-        #         'sellerId': self.product.get('Users').get('id')
-        #     }, self.on_success_buy_now_product, self.on_error_buy_now_product))
-    
     def on_error_buy_now_product(self, error):
         RequestHandler.show_error_popup(self.manager, "Order product error", str(error))
         self.manager.home.all_middle_section = {}

@@ -113,6 +113,7 @@
             size_hint_y: None
 
             BoxLayout:
+                id: top_profile
                 orientation: 'vertical'
                 size_hint_y: None
                 height: self.minimum_height
@@ -171,34 +172,8 @@
                     height: dp(30)
                     on_release: root.open_edit_profile()
 
-
-            # BoxLayout:
-            #     size_hint_y: None
-            #     height: root.height * 0.1
-            #     padding: '10dp'
-            #     spacing: '10dp'
-            #     canvas.before:
-            #         Color:
-            #             rgba: 1, 1, 1, 1
-            #         RoundedRectangle:
-            #             pos: self.pos
-            #             size: self.size
-            #             radius: [dp(10), ]
-
-            #     CustomButtonWidget:
-            #         text: "Orders"
-            #         # on_press: root.go_to_orders()
-            #         size_hint_x: 0.5
-            #         default_color: "315cad"
-
-            #     CustomButtonWidget:
-            #         text: "My Purchases"
-            #         # on_press: root.go_to_purchases()
-            #         size_hint_x: 0.5
-            #         default_color: "315cad"
-
-            # Section for 'To Pay', 'To Ship', 'To Receive', 'To Rate'
             BoxLayout:
+                id: orders
                 orientation: 'horizontal'
                 size_hint_y: None
                 height: root.height * 0.15
@@ -289,7 +264,7 @@
                 # orientation: 'horizontal'
                 id: bottom_grid
                 size_hint_y: None
-                height: root.height * 0.12
+                height: root.height * 0.05
                 cols: 2
                 spacing: '10dp'
 
@@ -314,6 +289,7 @@
                     valign: 'center'
 
                 CustomButtonWidget:
+                    id: recently_viewed
                     text: "Recently Viewed"
                     on_release: root.go_to_recently_viewed()
                     size_hint_x: 0.33
@@ -323,6 +299,7 @@
                     valign: 'center'
 
                 CustomButtonWidget:
+                    id: buy_again
                     text: "Buy Again"
                     on_release: root.go_to_buy_again()
                     size_hint_x: 0.33
@@ -330,12 +307,6 @@
                     text_size: self.width, None
                     halign: 'center'
                     valign: 'center'
-            
-            CustomButtonWidget:
-                text: "Become a Seller"
-                size_hint_y: None
-                height: root.height * 0.05
-                on_press: root.become_seller()
             
             CustomButtonWidget:
                 text: "Sign Out"

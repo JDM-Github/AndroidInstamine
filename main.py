@@ -40,7 +40,7 @@ Builder.load_file('popup/start_stream.kv')
 Builder.load_file('popup/add_product.kv')
 Builder.load_file('popup/chat_popup.kv')
 Builder.load_file('popup/edit_profile.kv')
-
+Builder.load_file('popup/payment.kv')
 
 # ETO UNG MANAGER, SYA LAHAT NG MAMANAGE NG LAHAT
 class Manager(ScreenManager):

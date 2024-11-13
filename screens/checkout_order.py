@@ -296,7 +296,7 @@ class CheckoutScreen(Screen):
 
     def on_success_buy_now_product(self, result):
         RequestHandler.show_error_popup(self.manager, "Successful Order", "You successfully order the product(s).")
-        self.manager.home.update_button_active("cart")
+        # self.manager.home.update_button_active("cart")
         self.manager.home.all_middle_section = {}
 
     def display_design(self):
